@@ -1,6 +1,10 @@
 import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 import { LoginContainer, LoginLogo } from './LoginStyles';
+import MailTwoToneIcon from '@mui/icons-material/MailTwoTone';
+import HttpsTwoToneIcon from '@mui/icons-material/HttpsTwoTone';
 import Logo from '../../assets/logo.svg';
 
 const LoginForm = () => {
@@ -10,8 +14,31 @@ const LoginForm = () => {
         <LoginLogo src={Logo} alt="Logo login" />
 
         <form>
-          <TextField id="outlined-basic" label="E-mail" variant="outlined" />
-          <TextField id="outlined-basic" label="Senha" variant="outlined" />
+          <TextField
+            id="outlined-basic"
+            label="E-mail"
+            variant="outlined"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <MailTwoToneIcon sx={{ fontSize: 20 }} />
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          <TextField
+            id="outlined-basic"
+            label="Senha"
+            variant="outlined"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <HttpsTwoToneIcon sx={{ fontSize: 20 }} />
+                </InputAdornment>
+              ),
+            }}
+          />
         </form>
         <div className="EsqueciSenha">
           <p>Esqueci minha senha</p>
