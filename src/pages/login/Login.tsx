@@ -1,17 +1,13 @@
-import { Button } from '@mui/material';
-import { Fragment } from 'react';
-import Header from '../../components/header/Header';
+import LoginForm from './LoginForm';
+import { LoginBackground } from './LoginStyles';
 
 const Login = () => {
   return (
-    <Fragment>
-      <Header userName="Nome do usuário" />
-      <div>
-        <Button variant="outlined" color="primary">
-          Salve
-        </Button>
-      </div>
-    </Fragment>
+    <>
+      <LoginBackground>
+        <LoginForm />
+      </LoginBackground>
+    </>
   );
 };
 

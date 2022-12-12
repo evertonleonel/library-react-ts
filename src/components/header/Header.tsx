@@ -6,11 +6,7 @@ import { HeaderContainer, HeaderLogo, HeaderUsuario } from './HeaderStyles';
 import { Menu, MenuItem } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-interface IProps {
-  userName: string;
-}
-
-const Header = ({ userName }: IProps) => {
+const Header = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
