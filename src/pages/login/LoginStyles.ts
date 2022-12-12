@@ -54,6 +54,7 @@ export const LoginContainer = styled.div`
 
     input {
       font-size: 14px;
+      background-color: #f1f3f5;
     }
     label {
       font-size: 14px;

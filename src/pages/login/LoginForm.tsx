@@ -1,7 +1,6 @@
 import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import { LoginContainer, LoginLogo } from './LoginStyles';
 import MailTwoToneIcon from '@mui/icons-material/MailTwoTone';
 import HttpsTwoToneIcon from '@mui/icons-material/HttpsTwoTone';
@@ -15,6 +14,11 @@ const LoginForm = () => {
 
         <form>
           <TextField
+            sx={{
+              backgroundColor: '#f1f2f3',
+              borderRadius: '4px',
+              '& fieldset': { border: 'none' },
+            }}
             id="outlined-basic"
             label="E-mail"
             variant="outlined"
@@ -28,6 +32,11 @@ const LoginForm = () => {
           />
 
           <TextField
+            sx={{
+              backgroundColor: '#f1f2f3',
+              borderRadius: '4px',
+              '& fieldset': { border: 'none' },
+            }}
             id="outlined-basic"
             label="Senha"
             variant="outlined"
