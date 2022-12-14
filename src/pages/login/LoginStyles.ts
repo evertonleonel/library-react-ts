@@ -25,9 +25,9 @@ export const LoginBackground = styled.div`
 
 export const LoginContainer = styled.div`
   max-width: 43.3rem;
-  max-height: 44.6rem;
+  /* max-height: 44.6rem; */
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   margin: 5%;
   background-color: #ffffff;
   border: 1px solid #70707040;
@@ -46,7 +46,6 @@ export const LoginContainer = styled.div`
   form {
     display: flex;
     flex-direction: column;
-
     max-width: 35.3rem;
     width: 100%;
     gap: 16px;
@@ -55,6 +54,7 @@ export const LoginContainer = styled.div`
     input {
       font-size: 14px;
       background-color: #f1f3f5;
+      border-radius: 4px;
     }
     label {
       font-size: 14px;
@@ -64,7 +64,7 @@ export const LoginContainer = styled.div`
   .EsqueciSenha {
     max-width: 35.3rem;
     width: 100%;
-    margin: 1.6rem auto 3.2rem auto;
+    margin: 0 auto 1.6rem auto;
     color: #000000;
     font-weight: bold;
     font-size: 1.4rem;
@@ -94,7 +94,7 @@ export const LoginContainer = styled.div`
       background-color: #ffc501;
 
       :hover {
-        border: 1px solid currentColor;
+        outline: 1px solid currentColor;
         transition: 0.6s;
       }
     }
