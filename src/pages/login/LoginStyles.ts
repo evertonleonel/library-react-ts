@@ -25,9 +25,7 @@ export const LoginBackground = styled.div`
 
 export const LoginContainer = styled.div`
   max-width: 43.3rem;
-  /* max-height: 44.6rem; */
   width: 100%;
-  /* height: 100%; */
   margin: 5%;
   background-color: #ffffff;
   border: 1px solid #70707040;
@@ -97,6 +95,11 @@ export const LoginContainer = styled.div`
         outline: 1px solid currentColor;
         transition: 0.6s;
       }
+    }
+
+    .buttonDisabled {
+      background-color: #ccc;
+      color: #495057;
     }
   }
 `;
