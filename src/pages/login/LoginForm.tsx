@@ -8,8 +8,8 @@ import HttpsTwoToneIcon from '@mui/icons-material/HttpsTwoTone';
 import Logo from '../../assets/logo.svg';
 import { LoginContainer, LoginLogo } from './LoginStyles';
 import { useFormik } from 'formik';
-import { validateSchema } from './validate';
-import UserContext from '../../components/context/UserContext';
+import { validationSchema, initialValues } from './validate';
+import UserContext from '../../context/UserContext';
 
 export interface Ilogin {
   email: string;
@@ -21,11 +21,8 @@ const LoginForm = () => {
 
   const [showError, setShowError] = React.useState(false);
   const { values, errors, handleChange, handleSubmit } = useFormik({
-    initialValues: {
-      email: '',
-      password: '',
-    },
-    validationSchema: validateSchema,
+    initialValues,
+    validationSchema,
     onSubmit(values: Ilogin) {
       try {
         userLogin(values);

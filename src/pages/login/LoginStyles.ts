@@ -49,6 +49,12 @@ export const LoginContainer = styled.div`
     gap: 16px;
     margin: 0 auto;
 
+    #email-helper-text,
+    #password-helper-text,
+    .MuiAlert-message {
+      font-size: 12px;
+    }
+
     input {
       font-size: 14px;
       background-color: #f1f3f5;
