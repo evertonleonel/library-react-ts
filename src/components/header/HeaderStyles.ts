@@ -13,12 +13,20 @@ export const HeaderContainer = styled.header`
   @media (max-width: 360px) {
     padding: 24px;
   }
+  @media (max-width: 250px) {
+    flex-direction: column;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    gap: 20px;
+    justify-content: center;
+  }
 `;
 
 export const HeaderLogo = styled.div`
   max-width: 12rem;
   height: 4.8rem;
   width: 100%;
+  cursor: pointer;
 `;
 
 export const HeaderUsuario = styled.div`
@@ -41,7 +49,7 @@ export const HeaderUsuario = styled.div`
     color: #495057;
     margin-left: 4px;
 
-    @media (max-width: 360px) {
+    @media (max-width: 600px) {
       display: none;
     }
   }

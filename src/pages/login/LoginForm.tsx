@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from '@mui/material';
+import Alert from '@mui/material/Alert';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import MailTwoToneIcon from '@mui/icons-material/MailTwoTone';
@@ -7,10 +8,8 @@ import HttpsTwoToneIcon from '@mui/icons-material/HttpsTwoTone';
 import Logo from '../../assets/logo.svg';
 import { LoginContainer, LoginLogo } from './LoginStyles';
 import { useFormik } from 'formik';
-import { userAuth } from '../../services/Auth';
-import InputError from '../../components/forms/InputError';
-import { validateSchema } from '../../components/context/validate';
-import { useNavigate } from 'react-router-dom';
+import { validateSchema } from './validate';
+import UserContext from '../../components/context/UserContext';
 
 export interface Ilogin {
   email: string;
@@ -18,7 +17,8 @@ export interface Ilogin {
 }
 
 const LoginForm = () => {
-  const navigate = useNavigate();
+  const { userLogin, error, message, loading } = React.useContext(UserContext);
+
   const [showError, setShowError] = React.useState(false);
   const { values, errors, handleChange, handleSubmit } = useFormik({
     initialValues: {
@@ -27,16 +27,12 @@ const LoginForm = () => {
     },
     validationSchema: validateSchema,
     onSubmit(values: Ilogin) {
-      const logar = userAuth(values);
-      logar.then((response) => {
-        if (response) {
-          navigate('/');
-        } else {
-          setShowError(true);
-          errors.email = 'E-mail ou senha inválido';
-          errors.password = 'E-mail ou senha inválido';
-        }
-      });
+      try {
+        userLogin(values);
+        setShowError(false);
+      } catch (err) {
+        setShowError(true);
+      }
     },
   });
 
@@ -59,6 +55,8 @@ const LoginForm = () => {
             onChange={handleChange}
             variant="outlined"
             label="E-mail"
+            error={showError ? true : false}
+            helperText={showError && errors.email}
             sx={{
               backgroundColor: '#f1f2f3',
               borderRadius: '4px',
@@ -72,7 +70,6 @@ const LoginForm = () => {
               ),
             }}
           />
-          {showError && <InputError erro={errors.email || null} />}
 
           <TextField
             id="password"
@@ -82,10 +79,13 @@ const LoginForm = () => {
             onChange={handleChange}
             label="Senha"
             variant="outlined"
+            error={showError ? true : false}
+            helperText={showError && errors.password}
             sx={{
               backgroundColor: '#f1f2f3',
               borderRadius: '4px',
               '& fieldset': { border: 'none' },
+              helperText: { fontSize: '20px' },
             }}
             InputProps={{
               endAdornment: (
@@ -95,21 +95,39 @@ const LoginForm = () => {
               ),
             }}
           />
-          {showError && <InputError erro={errors.password || null} />}
+          {error && (
+            <Alert variant="outlined" severity="error">
+              {message}
+            </Alert>
+          )}
+
           <div className="EsqueciSenha">
             <p>Esqueci minha senha</p>
           </div>
 
           <div className="LoginButton">
-            <Button
-              className="buttonSubmit"
-              variant="contained"
-              type="submit"
-              size="large"
-              fullWidth
-            >
-              Entrar
-            </Button>
+            {loading ? (
+              <Button
+                className="buttonSubmit  buttonDisabled"
+                variant="contained"
+                type="submit"
+                size="large"
+                fullWidth
+                disabled
+              >
+                Carregando...
+              </Button>
+            ) : (
+              <Button
+                className="buttonSubmit "
+                variant="contained"
+                type="submit"
+                size="large"
+                fullWidth
+              >
+                Entrar
+              </Button>
+            )}
           </div>
         </form>
       </LoginContainer>
