@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { Ilogin } from '../pages/login/LoginForm';
-import { GET_USER } from './Api';
+import { GET_LOGINS } from './Api';
 
 export const userAuth = async (values: Ilogin) => {
   try {
-    const response = await axios.get(GET_USER);
+    const response = await axios.get(GET_LOGINS);
 
     if (response && response.status === 200) {
       const logins = response.data;
