@@ -67,5 +67,11 @@ export const Card = styled.div`
     letter-spacing: 0px;
     background-color: white;
     height: 74px;
+
+    @media (max-width: 250px) {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
 `;
