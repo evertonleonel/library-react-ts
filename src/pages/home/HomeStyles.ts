@@ -17,9 +17,9 @@ export const CardsContainer = styled.nav`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4rem;
+  gap: 2.5rem;
   background-color: #fff;
-  padding: 2rem;
+  padding: 1.25rem;
 
   @media (max-width: 600px) {
     display: flex;
@@ -29,8 +29,8 @@ export const CardsContainer = styled.nav`
 
 export const Card = styled.div`
   background-color: #f4f4f4;
-  max-width: 25rem;
-  max-height: 22.4rem;
+  max-width: 15.625rem;
+  max-height: 14rem;
   width: 100%;
   height: 100%;
   display: flex;
@@ -60,7 +60,7 @@ export const Card = styled.div`
   }
 
   p {
-    font-size: 1.6rem;
+    font-size: 1rem;
     font-weight: 500;
     color: #343a40;
     text-align: center;

@@ -4,7 +4,7 @@ export const NavegationContainer = styled.nav`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  font-size: 2rem;
+  font-size: 1.25rem;
   color: #00000080;
 
   @media (max-width: 400px) {

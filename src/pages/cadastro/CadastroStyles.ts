@@ -33,7 +33,7 @@ export const CadastroDados = styled.div`
   margin: 0 auto;
 
   form {
-    max-width: 94.4rem;
+    max-width: 59rem;
     display: grid;
     margin: 0 auto;
     gap: 24px;
@@ -62,8 +62,8 @@ export const CadastroDados = styled.div`
 
   .formImage {
     grid-area: image;
-    width: 17.2rem;
-    height: 20.6rem;
+    width: 10.75rem;
+    height: 12.875rem;
     margin-right: 24px;
     color: #ffc501;
     font-size: 20px;
@@ -101,38 +101,34 @@ export const CadastroDados = styled.div`
     }
   }
 
-  #tittle {
-    height: 100%;
-  }
-
   .formTittle {
     grid-area: tittle;
-    max-width: 35rem;
+    max-width: 21.875rem;
+    height: 3.313rem;
     width: 100%;
-    height: 5.3rem;
   }
   .formAuthor {
     grid-area: author;
-    max-width: 35rem;
+    max-width: 21.875rem;
+    height: 3.313rem;
     width: 100%;
-    height: 5.3rem;
   }
   .formGenre {
     grid-area: genre;
-    max-width: 35rem;
+    max-width: 21.875rem;
     width: 100%;
-    height: 5.3rem;
+    height: 3.313rem;
   }
   .formSynopsis {
-    width: 35rem;
-    height: 129px;
     grid-area: synopsis;
+    width: 21.875rem;
+    height: 129px;
   }
   .formDate {
     grid-area: date;
-    max-width: 35rem;
+    max-width: 21.875rem;
+    height: 3.313rem;
     width: 100%;
-    height: 5.3rem;
   }
 
   .formTittle,

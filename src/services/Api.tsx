@@ -1,5 +1,5 @@
-export const API_URL = 'http://localhost:5000';
+import axios from 'axios';
 
-export const GET_LOGINS = 'http://localhost:5000/login';
-
-export const GET_BOOKS = 'http://localhost:5000/books';
+export const api = axios.create({
+  baseURL: 'http://localhost:5000',
+});

@@ -5,7 +5,7 @@ import { Alert, AlertColor, Button, Snackbar } from '@mui/material';
 import Adicionar from '../../assets/adicionar.svg';
 
 import { useFormik } from 'formik';
-import { IBook } from './interfaces';
+import { IBook } from '../../interfaces/book';
 import { useNavigate } from 'react-router-dom';
 import { CadastroDados } from './CadastroStyles';
 import { addNewBook } from '../../services/AddNewBook';
@@ -52,7 +52,6 @@ const CadastroLivro: React.FC = () => {
       setOpen(true);
       setMessage('Preencha todos os campos');
     }
-
     handleSubmit(e);
   };
 
@@ -111,7 +110,7 @@ const CadastroLivro: React.FC = () => {
             onChange={handleChange}
             label="Sinopse"
             multiline
-            rows={6}
+            rows={4.3}
             fullWidth
             helperText={errors && errors.synopsis}
           />
@@ -168,7 +167,7 @@ const CadastroLivro: React.FC = () => {
         onClose={() => {
           setOpen(false);
         }}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <Alert severity={severety} sx={{ width: '100%' }}>
           {message}

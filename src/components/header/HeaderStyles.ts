@@ -2,16 +2,13 @@ import styled from 'styled-components';
 
 export const HeaderContainer = styled.header`
   width: 100%;
-  height: 9.6rem;
+  height: 6rem;
   padding: 24px 34px;
   background-color: #fff;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  @media (max-width: 360px) {
-    padding: 24px;
-  }
   @media (max-width: 250px) {
     flex-direction: column;
     margin-top: 20px;
@@ -22,8 +19,8 @@ export const HeaderContainer = styled.header`
 `;
 
 export const HeaderLogo = styled.div`
-  max-width: 12rem;
-  height: 4.8rem;
+  max-width: 7.5rem;
+  height: 3rem;
   width: 100%;
   cursor: pointer;
 `;
@@ -35,12 +32,13 @@ export const HeaderUsuario = styled.div`
   cursor: pointer;
 
   img {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
   }
 
   img:nth-child(3) {
-    width: 23px;
+    margin-left: 4px;
+    width: 16px;
   }
 
   p {

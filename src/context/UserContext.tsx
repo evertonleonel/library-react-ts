@@ -1,9 +1,8 @@
-import axios from 'axios';
 import React from 'react';
+import { api } from '../services/Api';
+import { userAuth } from '../services/Auth';
 import { useNavigate } from 'react-router-dom';
 import { Ilogin } from '../pages/login/LoginForm';
-import { GET_LOGINS } from '../services/Api';
-import { userAuth } from '../services/Auth';
 
 interface Iprops {
   children: React.ReactNode;
@@ -90,7 +89,7 @@ export const UserStorage: React.FC<Iprops> = ({ children }) => {
       if (userEmail) {
         try {
           setLoading(true);
-          const response = await axios.get(`${GET_LOGINS}?email=${userEmail}`);
+          const response = await api.get(`/login/?email=${userEmail}`);
           if (response.status !== 200) throw new Error('Token inválido');
           await getUser();
           setLogin(true);

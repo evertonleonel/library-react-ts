@@ -24,7 +24,7 @@ export const LoginBackground = styled.div`
 `;
 
 export const LoginContainer = styled.div`
-  max-width: 43.3rem;
+  max-width: 27.063rem;
   width: 100%;
   margin: 5%;
   background-color: #ffffff;
@@ -37,14 +37,14 @@ export const LoginContainer = styled.div`
   flex-direction: column;
   align-items: center;
 
-  @media (max-width: 30rem) {
+  @media (max-width: 18.75rem) {
     padding: 56px 20px;
   }
 
   form {
     display: flex;
     flex-direction: column;
-    max-width: 35.3rem;
+    max-width: 22.063rem;
     width: 100%;
     gap: 16px;
     margin: 0 auto;
@@ -66,12 +66,12 @@ export const LoginContainer = styled.div`
   }
 
   .EsqueciSenha {
-    max-width: 35.3rem;
+    max-width: 22.063rem;
     width: 100%;
-    margin: 0 auto 1.6rem auto;
+    margin: 0 auto 1rem auto;
     color: #000000;
     font-weight: bold;
-    font-size: 1.4rem;
+    font-size: 0.875rem;
     text-align: left;
     text-decoration: underline;
     cursor: pointer;
@@ -83,8 +83,8 @@ export const LoginContainer = styled.div`
   }
 
   .LoginButton {
-    max-width: 35.3rem;
-    max-height: 4.5rem;
+    max-width: 22.063rem;
+    max-height: 2.813rem;
     width: 100%;
     height: 100%;
 
@@ -111,9 +111,9 @@ export const LoginContainer = styled.div`
 `;
 
 export const LoginLogo = styled.img`
-  max-width: 12rem;
-  max-height: 4.8rem;
+  max-width: 7.5rem;
+  max-height: 3rem;
   height: 100%;
   width: 100%;
-  margin: 0 auto 5.6rem auto;
+  margin: 0 auto 3.5rem auto;
 `;
