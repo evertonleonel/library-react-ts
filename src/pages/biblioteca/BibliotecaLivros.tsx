@@ -1,30 +1,22 @@
 import React from 'react';
 import { IBook } from '../../interfaces/book';
-import { getBooks } from '../../services/GetBooks';
 import { LivroCard, Livros, LivrosContainer } from './BibliotecaStyles';
 
-const BibliotecaLivros: React.FC = () => {
-  const [books, setBooks] = React.useState<IBook[]>();
+interface IBooksEvent {
+  books: IBook[];
+  getIDLivro: (e: React.MouseEvent<HTMLLIElement>) => void;
+}
 
-  React.useEffect(() => {
-    getBooks().then((data) => setBooks(data));
-  }, []);
-
+const BibliotecaLivros: React.FC<IBooksEvent> = ({ books, getIDLivro }) => {
   return (
     <LivrosContainer>
       <Livros>
         {books &&
-          books.map((livro, index) => {
+          books.map((book, index) => {
             return (
-              <LivroCard
-                key={index}
-                id={livro.id}
-                onClick={() => {
-                  console.log(livro.id);
-                }}
-              >
-                <img src={livro.image} />
-                <h2>{livro.tittle}</h2>
+              <LivroCard key={index} id={book.id} onClick={getIDLivro}>
+                <img src={book.image} />
+                <h2>{book.tittle}</h2>
               </LivroCard>
             );
           })}
