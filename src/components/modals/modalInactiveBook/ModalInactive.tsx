@@ -1,18 +1,54 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
-import { Modal } from '../modalBook/ModalBookStyles';
+import { Overlay } from '../modalBook/ModalBookStyles';
 import { ModalInactiveContainer } from './ModalInactiveStyles';
 
 import CloseModal from '../CloseModal';
+import { useModalContext } from '../../../hooks/useModalContext';
 
-const ModalInactive: React.FC = () => {
+import { IBook } from '../../../interfaces/book';
+import { initialValues, validationSchema } from './validate';
+
+import { useFormik } from 'formik';
+import { updateBook } from '../../../services/UpdateBook';
+
+interface IModalLoan {
+  selectedBook: IBook;
+}
+
+const ModalInactive: React.FC<IModalLoan> = ({ selectedBook }) => {
+  const { toggleModal } = useModalContext();
+
+  async function newStatusBook(description: string) {
+    const updateStatusBook = {
+      ...selectedBook,
+      status: {
+        description: description,
+        isActive: false,
+      },
+    };
+
+    await updateBook(updateStatusBook).then(() => {
+      toggleModal('InactiveClose');
+    });
+  }
+
+  const { values, errors, handleChange, handleSubmit } = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit(values) {
+      console.log(values);
+      newStatusBook(values.description);
+    },
+  });
+
   return (
-    <Modal>
+    <Overlay>
       <ModalInactiveContainer>
-        <CloseModal onClick={() => console.log('fechar modal')} />
+        <CloseModal onClick={() => toggleModal('InactiveClose')} />
         <h2>Inativar Livro</h2>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="formSynopsis">
             <TextField
               id="description"
@@ -21,6 +57,9 @@ const ModalInactive: React.FC = () => {
               multiline
               rows={4}
               fullWidth
+              value={values.description}
+              onChange={handleChange}
+              helperText={errors && errors.description}
             />
           </div>
           <div className="formButton">
@@ -35,7 +74,7 @@ const ModalInactive: React.FC = () => {
           </div>
         </form>
       </ModalInactiveContainer>
-    </Modal>
+    </Overlay>
   );
 };
 

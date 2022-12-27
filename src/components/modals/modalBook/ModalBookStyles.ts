@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Modal = styled.div`
+export const Overlay = styled.div`
   position: fixed;
   background: rgba(0, 0, 0, 0.4);
   width: 100vw;
@@ -17,39 +17,40 @@ export const Modal = styled.div`
 
   z-index: 10;
   overflow: auto;
+`;
 
-  .modalData {
-    margin-top: 55px;
-    max-width: 816px;
-    width: 100%;
-    background-color: #ffffff;
-    border: 1px solid #707070;
+export const ModalBookContainer = styled.div`
+  margin-top: 55px;
+  max-width: 816px;
+  width: 100%;
+  background-color: #ffffff;
+  border: 1px solid #707070;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 60px;
-    padding: 40px;
-    overflow: auto;
-    position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 60px;
+  padding: 40px;
+  overflow: auto;
+  position: relative;
 
-    .buttonCloseModal {
-      position: absolute;
-      right: 0;
-      top: 0;
-      padding: 24px;
-    }
+  .buttonCloseModal {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 24px;
+  }
 
-    @media (max-width: 900px) {
-      margin: 55px 24px 24px 24px;
-    }
+  @media (max-width: 900px) {
+    margin: 55px 24px 24px 24px;
   }
 
   .dataBookContent {
     display: flex;
     gap: 40px;
     margin-top: 30px;
+    width: 100%;
 
     @media (max-width: 700px) {
       display: flex;
@@ -83,7 +84,6 @@ export const Modal = styled.div`
   }
   .dataExtraReason {
     @media (max-width: 800px) {
-      background-color: blue;
       overflow: auto;
     }
 
@@ -131,7 +131,11 @@ export const ContainerLeft = styled.div`
     letter-spacing: 0px;
     text-transform: none;
     max-height: 53px;
-    height: 100%;
+    height: 53px;
+
+    @media (max-width: 360px) {
+      height: 100%;
+    }
   }
 `;
 
@@ -170,6 +174,7 @@ export const ContainerRight = styled.div`
 
   .dataBookInfo {
     max-height: 390px;
+    height: 100%;
     h2 {
       text-align: center;
     }
@@ -183,22 +188,10 @@ export const ContainerRight = styled.div`
     font-size: 16px;
 
     @media (max-width: 390px) {
-      margin-top: 30%;
       gap: 10px;
       flex-wrap: wrap;
     }
 
-    @media (max-width: 360px) {
-      margin-top: 40%;
-    }
-
-    @media (max-width: 330px) {
-      margin-top: 60%;
-    }
-
-    @media (max-width: 310px) {
-      margin-top: 70%;
-    }
     .btnEdit {
       font-size: 16px;
       text-transform: none;

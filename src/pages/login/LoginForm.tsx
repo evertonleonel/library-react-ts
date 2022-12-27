@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@mui/material';
+import { Button, Skeleton } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -105,18 +105,7 @@ const LoginForm = () => {
           </div>
 
           <div className="LoginButton">
-            {loading ? (
-              <Button
-                className="buttonSubmit  buttonDisabled"
-                variant="contained"
-                type="submit"
-                size="large"
-                fullWidth
-                disabled
-              >
-                Carregando...
-              </Button>
-            ) : (
+            {!loading && (
               <Button
                 className="buttonSubmit "
                 variant="contained"
@@ -127,6 +116,8 @@ const LoginForm = () => {
                 Entrar
               </Button>
             )}
+
+            {loading && <Skeleton height={73} />}
           </div>
         </form>
       </LoginContainer>

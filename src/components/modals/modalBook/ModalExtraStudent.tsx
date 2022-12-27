@@ -2,13 +2,16 @@ import React from 'react';
 import { IBook } from '../../../interfaces/book';
 
 interface IPropsBook {
-  book: IBook;
+  selectedBook: IBook;
 }
 
-const ModalExtraStudent: React.FC<IPropsBook> = ({ book }) => {
+const ModalExtraStudent: React.FC<IPropsBook> = ({ selectedBook }) => {
+  const rentHistory = selectedBook.rentHistory;
+  const lastRentHistory = rentHistory[rentHistory.length - 1];
+
   return (
     <>
-      {book && (
+      {selectedBook && (
         <div className="dataExtraReason">
           <h2>Dados do Aluno</h2>
 
@@ -22,12 +25,14 @@ const ModalExtraStudent: React.FC<IPropsBook> = ({ book }) => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th>studentName</th>
-                <th>class</th>
-                <th>withdrawalDate</th>
-                <th>deliveryDate</th>
-              </tr>
+              {lastRentHistory && (
+                <tr>
+                  <th>{lastRentHistory.class}</th>
+                  <th>{lastRentHistory.studentName}</th>
+                  <th>{lastRentHistory.deliveryDate}</th>
+                  <th>{lastRentHistory.withdrawalDate}</th>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

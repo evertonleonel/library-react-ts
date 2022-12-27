@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import LinkBackHome from '../../components/linkBackHome/LinkBackHome';
 
 import { BibliotecaContainer } from './BibliotecaStyles';
@@ -6,29 +6,60 @@ import BibliotecaBuscar from './BibliotecaBuscar';
 import BibliotecaLivros from './BibliotecaLivros';
 import { getBooks } from '../../services/GetBooks';
 import { IBook } from '../../interfaces/book';
-import Modal from '@mui/material/Modal';
-import { Box } from '@mui/material';
+
 import ModalBook from '../../components/modals/modalBook/ModalBook';
+import ModalLend from '../../components/modals/modalLendBook/ModalLend';
+import ModalInactive from '../../components/modals/modalInactiveBook/ModalInactive';
+import ModalHistory from '../../components/modals/modalHistoryBook/ModalHistory';
+import { useModalContext } from '../../hooks/useModalContext';
+import { getBookFromID } from '../../services/GetBookFromID';
+import { useLocation } from 'react-router-dom';
 
 const Biblioteca: React.FC = () => {
-  const [open, setOpen] = React.useState(false);
-  const OpenModal = () => setOpen(true);
-  const CloseModal = () => setOpen(false);
+  const {
+    modalBook,
+    modalLend,
+    modalInactive,
+    modalHistory,
+    openModal,
+    render,
+  } = useModalContext();
+
+  const { state } = useLocation();
 
   const [books, setBooks] = React.useState<IBook[]>();
+  const [selectedBook, setSelectedBook] = React.useState<IBook>();
   const [loadBooks, setLoadBooks] = React.useState<IBook[]>();
   const [inputPesquisar, setInputPesquisar] = React.useState('');
   const [selectFiltro, setSelectFiltro] = React.useState('');
-  const [livroId, setLivroId] = React.useState('');
+  const [ID, setID] = React.useState<string>();
+
+  useEffect(() => {
+    if (state) {
+      setSelectedBook(state.bookEdit);
+      openModal();
+    }
+  }, [state]);
 
   React.useEffect(() => {
     getBooks().then((data) => setBooks(data));
-  }, []);
 
-  function getIDLivro(e: React.MouseEvent<HTMLLIElement>) {
+    if (ID) {
+      getBookFromID(ID).then((book) => {
+        setSelectedBook(book);
+      });
+    }
+  }, [render]);
+
+  function getBookSelected(e: React.MouseEvent<HTMLLIElement>) {
     if (typeof e.currentTarget.id === 'string') {
-      setLivroId(e.currentTarget.id);
-      OpenModal();
+      const idBook = e.currentTarget.id;
+      setID(idBook);
+
+      getBookFromID(idBook).then((book) => {
+        setSelectedBook(book);
+        openModal();
+      });
     }
   }
 
@@ -42,9 +73,11 @@ const Biblioteca: React.FC = () => {
     setSelectFiltro(value);
   }
 
-  const filtrarLivros = async (pesquisa: string, tipo: string) => {
+  const filtrarLivros = async (
+    pesquisa: string,
+    tipo: 'tittle' | 'author' | 'systemEntryDate' | 'genre'
+  ) => {
     if (books) {
-      console.log(books);
       const FilterBooks = books.filter(
         (book) => book[tipo].toLowerCase().indexOf(pesquisa.toLowerCase()) > -1
       );
@@ -53,7 +86,10 @@ const Biblioteca: React.FC = () => {
   };
 
   function buscarLivros() {
-    filtrarLivros(inputPesquisar, selectFiltro);
+    filtrarLivros(
+      inputPesquisar,
+      selectFiltro as 'tittle' | 'author' | 'systemEntryDate' | 'genre'
+    );
   }
 
   return (
@@ -65,17 +101,19 @@ const Biblioteca: React.FC = () => {
         filtroChange={filtroChange}
         selectFiltro={selectFiltro}
       />
-
-      <Modal open={open} onClose={CloseModal}>
+      {selectedBook && (
         <>
-          <ModalBook livroId={livroId} />
+          {modalBook && <ModalBook selectedBook={selectedBook} />}
+          {modalLend && <ModalLend selectedBook={selectedBook} />}
+          {modalInactive && <ModalInactive selectedBook={selectedBook} />}
+          {modalHistory && <ModalHistory selectedBook={selectedBook} />}
         </>
-      </Modal>
+      )}
 
       {books && (
         <BibliotecaLivros
           books={loadBooks ? loadBooks : books}
-          getIDLivro={getIDLivro}
+          getBookSelected={getBookSelected}
         />
       )}
     </BibliotecaContainer>

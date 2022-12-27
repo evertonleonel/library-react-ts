@@ -102,11 +102,6 @@ export const LoginContainer = styled.div`
         transition: 0.6s;
       }
     }
-
-    .buttonDisabled {
-      background-color: #ccc;
-      color: #495057;
-    }
   }
 `;
 

@@ -2,23 +2,18 @@ import React from 'react';
 import { IBook } from '../../../interfaces/book';
 
 interface IPropsBook {
-  book: IBook;
+  selectedBook: IBook;
 }
 
-const ModalExtraInactive: React.FC<IPropsBook> = ({ book }) => {
+const ModalExtraInactive: React.FC<IPropsBook> = ({ selectedBook }) => {
   return (
     <>
-      {book && (
+      {selectedBook && (
         <div>
           <h2>Informações da Inativação</h2>
           <div className="dataReason">
             <h3>Motivo</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem
-              ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-              tempor incididunt ut labore et dolore magna aliqua.
-            </p>
+            <p>{selectedBook.status.description}</p>
           </div>
         </div>
       )}

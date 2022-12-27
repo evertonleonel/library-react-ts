@@ -36,7 +36,7 @@ export const CadastroDados = styled.div`
     max-width: 59rem;
     display: grid;
     margin: 0 auto;
-    gap: 24px;
+    gap: 30px;
 
     grid-template-areas:
       'image tittle author'

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import { Alert, AlertColor, Button, Snackbar } from '@mui/material';
@@ -6,30 +6,40 @@ import Adicionar from '../../assets/adicionar.svg';
 
 import { useFormik } from 'formik';
 import { IBook } from '../../interfaces/book';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { CadastroDados } from './CadastroStyles';
 import { addNewBook } from '../../services/AddNewBook';
 import { initialValues, validationSchema } from './validate';
 import { converterEmBase64 } from '../../services/ConversorBase64';
+import { getBooks } from '../../services/GetBooks';
 
 const CadastroLivro: React.FC = () => {
   const navigate = useNavigate();
+  const { state } = useLocation();
+
   const [message, setMessage] = React.useState('');
+  const [genre, setGenre] = useState<string[]>([]);
   const [severety, setSeverety] = React.useState<AlertColor>('info');
-  const [img, setImg] = React.useState('');
+  const [img, setImg] = React.useState(state?.bookEdit.image || '');
   const [open, setOpen] = React.useState(false);
 
-  const { values, errors, handleChange, handleSubmit, setFieldValue } =
+  const { values, errors, handleChange, handleSubmit, setFieldValue, touched } =
     useFormik({
-      initialValues,
+      initialValues: state?.bookEdit || initialValues,
       validationSchema,
       onSubmit(values: IBook) {
         try {
-          addNewBook(values);
-          setMessage('Cadastro realizado com sucesso!');
-          setSeverety('success');
-          setOpen(true);
-          navigate('/home');
+          const data = values.systemEntryDate.split('-').reverse().join('/');
+
+          if (state?.bookEdit) {
+            console.log(state);
+          } else {
+            addNewBook({ ...values, systemEntryDate: data });
+            setMessage('Cadastro realizado com sucesso!');
+            setSeverety('success');
+            setOpen(true);
+            navigate('/home');
+          }
         } catch (err) {
           setMessage('Error');
           setSeverety('error');
@@ -54,6 +64,15 @@ const CadastroLivro: React.FC = () => {
     }
     handleSubmit(e);
   };
+
+  useEffect(() => {
+    getBooks().then((data) => {
+      const aux = data.map((el) => {
+        return el.genre;
+      });
+      setGenre(aux.filter((current, i) => aux.indexOf(current) === i));
+    });
+  }, []);
 
   return (
     <CadastroDados>
@@ -87,7 +106,7 @@ const CadastroLivro: React.FC = () => {
             label="Título"
             variant="outlined"
             fullWidth
-            helperText={errors && errors.tittle}
+            helperText={touched.tittle && errors.tittle}
           />
         </div>
         <div className="formAuthor">
@@ -99,7 +118,7 @@ const CadastroLivro: React.FC = () => {
             onChange={handleChange}
             variant="outlined"
             fullWidth
-            helperText={errors && errors.author}
+            helperText={touched.author && errors.author}
           />
         </div>
         <div className="formSynopsis">
@@ -112,7 +131,7 @@ const CadastroLivro: React.FC = () => {
             multiline
             rows={4.3}
             fullWidth
-            helperText={errors && errors.synopsis}
+            helperText={touched.synopsis && errors.synopsis}
           />
         </div>
         <div className="formGenre">
@@ -124,12 +143,15 @@ const CadastroLivro: React.FC = () => {
             label="Genero"
             select
             fullWidth
-            helperText={errors && errors.genre}
+            helperText={touched.genre && errors.genre}
           >
-            <MenuItem value="Fantasia">Fantasia</MenuItem>
-            <MenuItem value="Ação e Aventura">Ação e Aventura</MenuItem>
-            <MenuItem value="Horror">Horror</MenuItem>
-            <MenuItem value="Romance">Romance</MenuItem>
+            {genre.map((el, index) => {
+              return (
+                <MenuItem key={index} value={el}>
+                  {el}
+                </MenuItem>
+              );
+            })}
           </TextField>
         </div>
         <div className="formDate">
@@ -143,14 +165,22 @@ const CadastroLivro: React.FC = () => {
             type="date"
             InputLabelProps={{ shrink: true }}
             fullWidth
-            helperText={errors && errors.systemEntryDate}
+            helperText={touched.systemEntryDate && errors.systemEntryDate}
           />
         </div>
 
         <div className="formButtons">
           <Button
             onClick={() => {
-              navigate('/home');
+              if (state) {
+                navigate('/biblioteca', {
+                  state: {
+                    bookEdit: state.bookEdit,
+                  },
+                });
+              } else {
+                navigate('/home');
+              }
             }}
             className="btnCancel"
           >

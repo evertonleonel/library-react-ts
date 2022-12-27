@@ -2,6 +2,7 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
+
 import { PesquisaContainer } from './BibliotecaStyles';
 
 interface ISearch {

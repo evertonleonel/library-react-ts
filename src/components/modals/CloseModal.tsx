@@ -9,8 +9,8 @@ interface Iprops {
 const CloseModal: React.FC<Iprops> = ({ onClick }) => {
   return (
     <div className="buttonCloseModal">
-      <IconButton>
-        <img src={CloseModalButton} onClick={onClick} />
+      <IconButton onClick={onClick}>
+        <img src={CloseModalButton} />
       </IconButton>
     </div>
   );

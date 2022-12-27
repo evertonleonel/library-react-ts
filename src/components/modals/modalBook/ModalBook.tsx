@@ -1,89 +1,135 @@
 import React from 'react';
 import { Button } from '@mui/material';
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
-import { ContainerLeft, ContainerRight, Modal } from './ModalBookStyles';
+import {
+  ContainerLeft,
+  ContainerRight,
+  ModalBookContainer,
+  Overlay,
+} from './ModalBookStyles';
 
 import CloseModal from '../CloseModal';
 import { IBook } from '../../../interfaces/book';
 import ModalExtraStudent from './ModalExtraStudent';
 import ModalExtraInactive from './ModalExtraInactive';
-import { getBookFromID } from '../../../services/GetBookFromID';
+import { useModalContext } from '../../../hooks/useModalContext';
+import { updateBook } from '../../../services/UpdateBook';
+import { useNavigate } from 'react-router-dom';
 
-interface Iprops {
-  livroId: string;
+interface IModalBooks {
+  selectedBook: IBook;
 }
 
-const ModalBook: React.FC<Iprops> = ({ livroId }) => {
-  const [book, setBook] = React.useState<IBook>();
+const ModalBook: React.FC<IModalBooks> = ({ selectedBook }) => {
+  const { closeModal, toggleModal, bookStatusLend, returnBook } =
+    useModalContext();
 
-  React.useEffect(() => {
-    if (typeof livroId === 'string') {
-      getBookFromID(livroId).then((data) => {
-        console.log(data);
-        setBook(data);
-      });
-    }
-  }, []);
+  const navigate = useNavigate();
+
+  const rentHistory = selectedBook.rentHistory;
+  const lastRentHistory = rentHistory[rentHistory.length - 1];
+
+  async function newStatusBook() {
+    const activeBook = {
+      ...selectedBook,
+      status: {
+        description: '',
+        isActive: true,
+      },
+    };
+
+    await updateBook(activeBook);
+    toggleModal('render');
+  }
 
   return (
-    <Modal>
-      <div className="modalData">
-        <CloseModal onClick={() => console.log('fecha modal')} />
+    <Overlay>
+      <ModalBookContainer>
+        <CloseModal onClick={closeModal} />
         <div className="dataBookContent">
           <ContainerLeft>
-            {book && <img src={book.image} />}
-            <Button
-              className="btnEmprestarDevolver"
-              variant="contained"
-              sx={{ backgroundColor: '#FFC501' }}
-              color="inherit"
-              fullWidth
-              startIcon={<AutoStoriesOutlinedIcon />}
-            >
-              Emprestar
-            </Button>
+            {selectedBook && <img src={selectedBook.image} />}
+            {selectedBook.rentHistory && !bookStatusLend && (
+              <Button
+                onClick={() => {
+                  toggleModal('Lend');
+                }}
+                className="btnEmprestarDevolver"
+                variant="contained"
+                sx={{ backgroundColor: '#FFC501' }}
+                color="inherit"
+                startIcon={<AutoStoriesOutlinedIcon />}
+                fullWidth
+              >
+                Emprestar
+              </Button>
+            )}
 
-            {/* <Button
-              className="btnEmprestarDevolver"
-              variant="outlined"
-              sx={{ backgroundColor: '#F4F4F4', borderColor: '#ADB5BD' }}
-              fullWidth
-              startIcon={<AutoStoriesOutlinedIcon />}
-            >
-              Devolver
-            </Button> */}
+            {selectedBook.rentHistory && lastRentHistory && bookStatusLend && (
+              <Button
+                className="btnEmprestarDevolver"
+                onClick={returnBook}
+                variant="outlined"
+                sx={{ backgroundColor: '#F4F4F4', borderColor: '#ADB5BD' }}
+                fullWidth
+                startIcon={<AutoStoriesOutlinedIcon />}
+              >
+                Devolver
+              </Button>
+            )}
           </ContainerLeft>
 
           <ContainerRight>
-            {book && (
+            {selectedBook && (
               <div className="dataBookInfo">
-                <h2>{book.tittle}</h2>
+                <h2>{selectedBook.tittle}</h2>
                 <h3>Sinopse</h3>
-                <p>{book.synopsis}</p>
+                <p>{selectedBook.synopsis}</p>
                 <h3>Autor</h3>
-                <p>{book.author}</p>
+                <p>{selectedBook.author}</p>
                 <h3>Gênero</h3>
-                <p>{book.genre}</p>
+                <p>{selectedBook.genre}</p>
                 <h3>Data de Entrada</h3>
-                <p>{book.systemEntryDate}</p>
+                <p>{selectedBook.systemEntryDate}</p>
               </div>
             )}
             <div className="dataButtons">
-              <Button variant="outlined" className="btnEdit">
+              <Button
+                variant="outlined"
+                className="btnEdit"
+                onClick={() =>
+                  navigate('/cadastro', {
+                    state: {
+                      bookEdit: selectedBook,
+                    },
+                  })
+                }
+              >
                 Editar
               </Button>
-              <Button variant="outlined" color="error" className="btnEdit">
-                Inativar
-              </Button>
-              {/* <Button
-                variant="outlined"
-                sx={{ color: '#49D749', borderColor: '#49D749' }}
-                className="btnEdit"
-              >
-                Ativar
-              </Button> */}
+
+              {selectedBook.status.isActive ? (
+                <Button
+                  onClick={() => toggleModal('Inactive')}
+                  variant="outlined"
+                  color="error"
+                  className="btnEdit"
+                >
+                  Inativar
+                </Button>
+              ) : (
+                <Button
+                  onClick={newStatusBook}
+                  variant="outlined"
+                  sx={{ color: '#49D749', borderColor: '#49D749' }}
+                  className="btnEdit"
+                >
+                  Ativar
+                </Button>
+              )}
 
               <Button
+                onClick={() => toggleModal('History')}
                 sx={{ borderColor: ' #ADB5BD ', color: '#000000' }}
                 variant="outlined"
                 className="btnEdit"
@@ -93,18 +139,18 @@ const ModalBook: React.FC<Iprops> = ({ livroId }) => {
             </div>
           </ContainerRight>
         </div>
-        {book && (
+        {selectedBook && !selectedBook.status.isActive && (
           <div className="dataStudent">
-            <ModalExtraInactive book={book} />
+            <ModalExtraInactive selectedBook={selectedBook} />
           </div>
         )}
-        {book && (
+        {selectedBook.rentHistory && lastRentHistory && bookStatusLend && (
           <div className="dataStudent">
-            <ModalExtraStudent book={book} />
+            <ModalExtraStudent selectedBook={selectedBook} />
           </div>
         )}
-      </div>
-    </Modal>
+      </ModalBookContainer>
+    </Overlay>
   );
 };
 
