@@ -18,7 +18,7 @@ interface IModalLoan {
 }
 
 const ModalInactive: React.FC<IModalLoan> = ({ selectedBook }) => {
-  const { toggleModal } = useModalContext();
+  const { handleModal, inactivedBook } = useModalContext();
 
   async function newStatusBook(description: string) {
     const updateStatusBook = {
@@ -30,7 +30,8 @@ const ModalInactive: React.FC<IModalLoan> = ({ selectedBook }) => {
     };
 
     await updateBook(updateStatusBook).then(() => {
-      toggleModal('InactiveClose');
+      handleModal('modalInactive', 'modalBook');
+      inactivedBook();
     });
   }
 
@@ -38,7 +39,6 @@ const ModalInactive: React.FC<IModalLoan> = ({ selectedBook }) => {
     initialValues,
     validationSchema,
     onSubmit(values) {
-      console.log(values);
       newStatusBook(values.description);
     },
   });
@@ -46,7 +46,7 @@ const ModalInactive: React.FC<IModalLoan> = ({ selectedBook }) => {
   return (
     <Overlay>
       <ModalInactiveContainer>
-        <CloseModal onClick={() => toggleModal('InactiveClose')} />
+        <CloseModal onClick={() => handleModal('modalInactive', 'modalBook')} />
         <h2>Inativar Livro</h2>
         <form onSubmit={handleSubmit}>
           <div className="formSynopsis">

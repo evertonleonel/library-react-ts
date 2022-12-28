@@ -16,14 +16,7 @@ import { getBookFromID } from '../../services/GetBookFromID';
 import { useLocation } from 'react-router-dom';
 
 const Biblioteca: React.FC = () => {
-  const {
-    modalBook,
-    modalLend,
-    modalInactive,
-    modalHistory,
-    openModal,
-    render,
-  } = useModalContext();
+  const { openModal, render, objModal, handleModal } = useModalContext();
 
   const { state } = useLocation();
 
@@ -58,7 +51,7 @@ const Biblioteca: React.FC = () => {
 
       getBookFromID(idBook).then((book) => {
         setSelectedBook(book);
-        openModal();
+        handleModal('modalBook', 'modalBook');
       });
     }
   }
@@ -103,10 +96,14 @@ const Biblioteca: React.FC = () => {
       />
       {selectedBook && (
         <>
-          {modalBook && <ModalBook selectedBook={selectedBook} />}
-          {modalLend && <ModalLend selectedBook={selectedBook} />}
-          {modalInactive && <ModalInactive selectedBook={selectedBook} />}
-          {modalHistory && <ModalHistory selectedBook={selectedBook} />}
+          {objModal.modalBook && <ModalBook selectedBook={selectedBook} />}
+          {objModal.modalLend && <ModalLend selectedBook={selectedBook} />}
+          {objModal.modalInactive && (
+            <ModalInactive selectedBook={selectedBook} />
+          )}
+          {objModal.modalHistory && (
+            <ModalHistory selectedBook={selectedBook} />
+          )}
         </>
       )}
 

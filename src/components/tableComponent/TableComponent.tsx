@@ -17,16 +17,24 @@ export type THeadTable = {
 
 interface IProps {
   HEAD_TABLE: THeadTable[];
+  maxHeight?: number;
+  maxWidth?: string;
   data: any[];
   handleFilter: (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
 }
 
-export const TableComponent = ({ HEAD_TABLE, data, handleFilter }: IProps) => {
+export const TableComponent = ({
+  HEAD_TABLE,
+  data,
+  maxHeight,
+  maxWidth,
+  handleFilter,
+}: IProps) => {
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableContainer sx={{ maxHeight: 400, maxWidth: '978px' }}>
+      <TableContainer sx={{ maxHeight: { maxHeight }, maxWidth: { maxWidth } }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>

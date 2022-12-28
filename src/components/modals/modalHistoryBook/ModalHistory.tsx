@@ -19,7 +19,7 @@ type TObjFilter = {
 };
 
 const ModalHistory: React.FC<IModalHistory> = ({ selectedBook }) => {
-  const { toggleModal } = useModalContext();
+  const { handleModal } = useModalContext();
   const rentHistory = selectedBook.rentHistory;
 
   const [objFiltrer, setObjFilter] = useState<TObjFilter>({
@@ -56,7 +56,24 @@ const ModalHistory: React.FC<IModalHistory> = ({ selectedBook }) => {
       !objFiltrer.classe ||
       history.class.toLowerCase().includes(objFiltrer.classe.toLowerCase());
 
-    return studantFilter && classeFilter;
+    const deliveryDateFilter =
+      !objFiltrer.deliveryDate ||
+      history.deliveryDate
+        .toLowerCase()
+        .includes(objFiltrer.deliveryDate.toLowerCase());
+
+    const withdrawalDateFilter =
+      !objFiltrer.withdrawalDate ||
+      history.withdrawalDate
+        .toLowerCase()
+        .includes(objFiltrer.withdrawalDate.toLowerCase());
+
+    return (
+      studantFilter &&
+      classeFilter &&
+      deliveryDateFilter &&
+      withdrawalDateFilter
+    );
   });
 
   const handleFilter = (
@@ -69,55 +86,18 @@ const ModalHistory: React.FC<IModalHistory> = ({ selectedBook }) => {
     });
   };
 
-  const ss = [
-    {
-      title: 'Book1',
-      rent: [
-        {
-          student: '',
-          classe: '',
-          deliveryDate: '',
-          withdrawalDate: '',
-        },
-      ],
-    },
-    {
-      title: 'Book2',
-      rent: [
-        {
-          student: '',
-          classe: '',
-          deliveryDate: '',
-          withdrawalDate: '',
-        },
-      ],
-    },
-  ];
-
-  const parseTeste = ss
-    .map((el) => {
-      return el.rent.map((ren) => {
-        return {
-          title: el.title,
-          student: ren.student,
-          classe: ren.classe,
-          deliveryDate: ren.deliveryDate,
-          withdrawalDate: ren.withdrawalDate,
-        };
-      });
-    })
-    .flat();
-
   return (
     <Overlay>
       <ModalHistoryContainer>
-        <CloseModal onClick={() => toggleModal('HistoryClose')} />
+        <CloseModal onClick={() => handleModal('modalHistory', 'modalBook')} />
         <h2>Histórico de Empréstimo do Livro</h2>
         <div>
           <TableComponent
             HEAD_TABLE={HEAD_TABLE}
             data={filterRentHistory}
             handleFilter={handleFilter}
+            maxWidth={'978px'}
+            maxHeight={400}
           />
         </div>
       </ModalHistoryContainer>

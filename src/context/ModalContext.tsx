@@ -4,22 +4,6 @@ interface IProps {
   children: React.ReactNode;
 }
 
-interface IModalContext {
-  modalBook: boolean;
-  render: boolean;
-  modalLend: boolean;
-  modalInactive: boolean;
-  modalHistory: boolean;
-  openModal: () => void;
-  closeModal: () => void;
-  toggleModal: (modal: string) => void;
-  bookStatusLend: boolean;
-  borrowBook: () => void;
-  returnBook: () => void;
-}
-
-export const ModalContext = createContext({} as IModalContext);
-
 export type TObjModal = {
   modalBook: boolean;
   modalLend: boolean;
@@ -27,17 +11,32 @@ export type TObjModal = {
   modalHistory: boolean;
 };
 
+interface IModalContext {
+  render: boolean;
+  bookStatusLend: boolean;
+  inactivedBook: () => void;
+  activedBook: () => void;
+  openModal: () => void;
+  closeModal: () => void;
+  borrowBook: () => void;
+  returnBook: () => void;
+  objModal: TObjModal;
+  handleModal: (
+    closeModal: 'modalBook' | 'modalLend' | 'modalInactive' | 'modalHistory',
+    openModal?: 'modalBook' | 'modalLend' | 'modalInactive' | 'modalHistory'
+  ) => void;
+}
+
+export const ModalContext = createContext({} as IModalContext);
+
 export const ModalProvider: React.FC<IProps> = ({ children }) => {
   const [modalBook, setModalBook] = useState(false);
-  const [modalLend, setModalLend] = useState(false);
-  const [modalInactive, setModalInactive] = useState(false);
-  const [modalHistory, setModalHistory] = useState(false);
 
   const [objModal, setObjModal] = useState({
-    modalBook: true,
-    modalLend: true,
-    modalInactive: true,
-    modalHistory: true,
+    modalBook: false,
+    modalLend: false,
+    modalInactive: false,
+    modalHistory: false,
   });
   const [render, setRender] = useState(false);
   const [bookStatusLend, setStatusBookLend] = React.useState<boolean>(false);
@@ -47,6 +46,9 @@ export const ModalProvider: React.FC<IProps> = ({ children }) => {
 
   const borrowBook = () => setStatusBookLend(true);
   const returnBook = () => setStatusBookLend(false);
+
+  const inactivedBook = () => setRender(false);
+  const activedBook = () => setRender(true);
 
   const handleModal = (
     closeModal: keyof typeof objModal,
@@ -59,62 +61,19 @@ export const ModalProvider: React.FC<IProps> = ({ children }) => {
     }
   };
 
-  const toggleModal = (modal: string) => {
-    if (modal === 'Lend') {
-      setModalLend(true);
-      closeModal();
-      return;
-    }
-    if (modal === 'LendClose') {
-      setModalLend(false);
-      openModal();
-      setRender(!render);
-      return;
-    }
-
-    if (modal === 'Inactive') {
-      setModalInactive(true);
-      closeModal();
-      return;
-    }
-    if (modal === 'InactiveClose') {
-      setModalInactive(false);
-      closeModal();
-      return;
-    }
-
-    if (modal === 'History') {
-      setModalHistory(true);
-      closeModal();
-      setRender(!render);
-      return;
-    }
-    if (modal === 'HistoryClose') {
-      setModalHistory(false);
-      openModal();
-      setRender(!render);
-      return;
-    }
-
-    if (modal === 'render') {
-      setRender(!render);
-    }
-  };
-
   return (
     <ModalContext.Provider
       value={{
         openModal,
         closeModal,
-        modalBook,
-        modalLend,
-        modalInactive,
-        modalHistory,
-        toggleModal,
         render,
+        inactivedBook,
+        activedBook,
         bookStatusLend,
         borrowBook,
         returnBook,
+        objModal,
+        handleModal,
       }}
     >
       {children}

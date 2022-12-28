@@ -21,10 +21,9 @@ interface IModalBooks {
 }
 
 const ModalBook: React.FC<IModalBooks> = ({ selectedBook }) => {
-  const { closeModal, toggleModal, bookStatusLend, returnBook } =
-    useModalContext();
-
   const navigate = useNavigate();
+  const { bookStatusLend, returnBook, handleModal, activedBook } =
+    useModalContext();
 
   const rentHistory = selectedBook.rentHistory;
   const lastRentHistory = rentHistory[rentHistory.length - 1];
@@ -39,20 +38,20 @@ const ModalBook: React.FC<IModalBooks> = ({ selectedBook }) => {
     };
 
     await updateBook(activeBook);
-    toggleModal('render');
+    activedBook();
   }
 
   return (
     <Overlay>
       <ModalBookContainer>
-        <CloseModal onClick={closeModal} />
+        <CloseModal onClick={() => handleModal('modalBook')} />
         <div className="dataBookContent">
           <ContainerLeft>
             {selectedBook && <img src={selectedBook.image} />}
             {selectedBook.rentHistory && !bookStatusLend && (
               <Button
                 onClick={() => {
-                  toggleModal('Lend');
+                  handleModal('modalBook', 'modalLend');
                 }}
                 className="btnEmprestarDevolver"
                 variant="contained"
@@ -60,6 +59,7 @@ const ModalBook: React.FC<IModalBooks> = ({ selectedBook }) => {
                 color="inherit"
                 startIcon={<AutoStoriesOutlinedIcon />}
                 fullWidth
+                disabled={!selectedBook.status.isActive}
               >
                 Emprestar
               </Button>
@@ -110,7 +110,7 @@ const ModalBook: React.FC<IModalBooks> = ({ selectedBook }) => {
 
               {selectedBook.status.isActive ? (
                 <Button
-                  onClick={() => toggleModal('Inactive')}
+                  onClick={() => handleModal('modalBook', 'modalInactive')}
                   variant="outlined"
                   color="error"
                   className="btnEdit"
@@ -129,7 +129,7 @@ const ModalBook: React.FC<IModalBooks> = ({ selectedBook }) => {
               )}
 
               <Button
-                onClick={() => toggleModal('History')}
+                onClick={() => handleModal('modalBook', 'modalHistory')}
                 sx={{ borderColor: ' #ADB5BD ', color: '#000000' }}
                 variant="outlined"
                 className="btnEdit"

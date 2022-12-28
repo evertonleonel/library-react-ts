@@ -17,7 +17,7 @@ interface IModalLend {
 }
 
 const ModalLend: React.FC<IModalLend> = ({ selectedBook }) => {
-  const { toggleModal, borrowBook } = useModalContext();
+  const { handleModal, borrowBook } = useModalContext();
 
   async function updateBookLend(values: IRentHistory) {
     const updateRentBook: IBook = {
@@ -43,7 +43,7 @@ const ModalLend: React.FC<IModalLend> = ({ selectedBook }) => {
           withdrawalDate: dataEntrada,
           deliveryDate: dataRetirada,
         });
-        toggleModal('LendClose');
+        handleModal('modalLend', 'modalBook');
         borrowBook();
       } catch (err) {
         console.log(err);
@@ -54,7 +54,7 @@ const ModalLend: React.FC<IModalLend> = ({ selectedBook }) => {
   return (
     <Overlay>
       <ModalLendContainer>
-        <CloseModal onClick={() => toggleModal('LendClose')} />
+        <CloseModal onClick={() => handleModal('modalLend', 'modalBook')} />
         <h2>Informe os dados do aluno antes de continuar</h2>
         <form onSubmit={handleSubmit} className="form">
           <div className="formData">
