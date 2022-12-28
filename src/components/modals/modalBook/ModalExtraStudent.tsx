@@ -27,8 +27,8 @@ const ModalExtraStudent: React.FC<IPropsBook> = ({ selectedBook }) => {
             <tbody>
               {lastRentHistory && (
                 <tr>
-                  <th>{lastRentHistory.class}</th>
                   <th>{lastRentHistory.studentName}</th>
+                  <th>{lastRentHistory.class}</th>
                   <th>{lastRentHistory.deliveryDate}</th>
                   <th>{lastRentHistory.withdrawalDate}</th>
                 </tr>

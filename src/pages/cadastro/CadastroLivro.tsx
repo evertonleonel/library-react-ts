@@ -13,10 +13,12 @@ import { addNewBook } from '../../services/AddNewBook';
 import { validationSchema } from './validate';
 import { converterEmBase64 } from '../../services/ConversorBase64';
 import { getBooks } from '../../services/GetBooks';
+import { updateBook } from '../../services/UpdateBook';
 
 const CadastroLivro: React.FC = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
+  console.log(state, 'sou o state');
 
   const [message, setMessage] = React.useState('');
   const [genre, setGenre] = useState<string[]>([]);
@@ -27,18 +29,18 @@ const CadastroLivro: React.FC = () => {
   const { values, errors, handleChange, handleSubmit, setFieldValue, touched } =
     useFormik({
       initialValues: {
-        id: state.bookEdit ? state.bookEdit.id : uuidv4(),
-        tittle: state.bookEdit ? state.bookEdit.tittle : '',
-        author: state.bookEdit ? state.bookEdit.author : '',
-        status: state.bookEdit
-          ? state.bookEdit.status
-          : { description: '', isActive: false },
-        genre: state.bookEdit ? state.bookEdit.genre : '',
-        image: state.bookEdit ? state.bookEdit.image : '',
-        systemEntryDate: state.bookEdit
+        id: state?.bookEdit ? state.bookEdit.id : uuidv4(),
+        tittle: state?.bookEdit ? state.bookEdit.tittle : '',
+        author: state?.bookEdit ? state.bookEdit.author : '',
+        status: state?.bookEdit
+          ? state?.bookEdit.status
+          : { description: '', isActive: true },
+        genre: state?.bookEdit ? state.bookEdit.genre : '',
+        image: state?.bookEdit ? state.bookEdit.image : '',
+        systemEntryDate: state?.bookEdit
           ? state.bookEdit.systemEntryDate.split('/').reverse().join('-')
           : '',
-        synopsis: state.bookEdit ? state.bookEdit.synopsis : '',
+        synopsis: state?.bookEdit ? state.bookEdit.synopsis : '',
         rentHistory: [],
       },
       validationSchema,
@@ -47,7 +49,12 @@ const CadastroLivro: React.FC = () => {
           const data = values.systemEntryDate.split('-').reverse().join('/');
 
           if (state?.bookEdit) {
-            console.log(state);
+            updateBook({ ...values, systemEntryDate: data });
+            navigate('/biblioteca', {
+              state: {
+                bookEdit: { ...values, systemEntryDate: data },
+              },
+            });
           } else {
             addNewBook({ ...values, systemEntryDate: data });
             setMessage('Cadastro realizado com sucesso!');
@@ -72,7 +79,6 @@ const CadastroLivro: React.FC = () => {
     }
   }
 
-  console.log(state);
   const formSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (!img) {
       setOpen(true);

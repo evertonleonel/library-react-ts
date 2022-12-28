@@ -15,6 +15,11 @@ export const ModalInactiveContainer = styled.div`
 
   position: relative;
 
+  .MuiFormHelperText-root {
+    color: #ffc501;
+    font-size: 15px;
+  }
+
   .buttonCloseModal {
     position: absolute;
     right: 0;

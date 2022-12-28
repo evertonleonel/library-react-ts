@@ -10,6 +10,7 @@ import Biblioteca from '../pages/biblioteca/Biblioteca';
 import Emprestimo from '../pages/emprestimo/Emprestimo';
 import { ModalProvider } from '../context/ModalContext';
 import Editar from '../pages/editar/Editar';
+import PaginaNaoEncontrada from '../pages/paginaNaoEncontrada/PaginaNaoEncontrada';
 
 function RotaPrincipal() {
   const userLogged = !!localStorage.getItem('user');
@@ -29,6 +30,7 @@ function RotaPrincipal() {
                 <Route path="editar" element={<Editar />} />
               </Route>
             )}
+            <Route path="*" element={<PaginaNaoEncontrada />} />
           </Routes>
         </ModalProvider>
       </UserStorage>

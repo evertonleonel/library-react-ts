@@ -16,7 +16,8 @@ import { getBookFromID } from '../../services/GetBookFromID';
 import { useLocation } from 'react-router-dom';
 
 const Biblioteca: React.FC = () => {
-  const { openModal, render, objModal, handleModal } = useModalContext();
+  const { openModal, render, objModal, handleModal, bookStatusLend } =
+    useModalContext();
 
   const { state } = useLocation();
 
@@ -32,7 +33,7 @@ const Biblioteca: React.FC = () => {
       setSelectedBook(state.bookEdit);
       openModal();
     }
-  }, [state]);
+  }, [state, render]);
 
   React.useEffect(() => {
     getBooks().then((data) => setBooks(data));
@@ -42,7 +43,7 @@ const Biblioteca: React.FC = () => {
         setSelectedBook(book);
       });
     }
-  }, [render]);
+  }, [render, bookStatusLend]);
 
   function getBookSelected(e: React.MouseEvent<HTMLLIElement>) {
     if (typeof e.currentTarget.id === 'string') {
