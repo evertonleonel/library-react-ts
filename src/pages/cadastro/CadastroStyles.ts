@@ -118,6 +118,24 @@ export const CadastroDados = styled.div`
     max-width: 21.875rem;
     width: 100%;
     height: 3.313rem;
+
+    select {
+      padding: 6px;
+      font-size: 16px;
+      width: 100%;
+      height: 100%;
+      background-color: #ffffff;
+      border-color: #133052;
+      border: 1px solid #133052;
+      border-radius: 5px;
+      padding: 14px;
+      font-family: Roboto, sans-serif;
+
+      option {
+        font-size: 16px;
+        margin-top: 10px;
+      }
+    }
   }
   .formSynopsis {
     grid-area: synopsis;

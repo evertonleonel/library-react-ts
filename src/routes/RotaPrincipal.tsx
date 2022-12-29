@@ -9,7 +9,6 @@ import Cadastro from '../pages/cadastro/Cadastro';
 import Biblioteca from '../pages/biblioteca/Biblioteca';
 import Emprestimo from '../pages/emprestimo/Emprestimo';
 import { ModalProvider } from '../context/ModalContext';
-import Editar from '../pages/editar/Editar';
 import PaginaNaoEncontrada from '../pages/paginaNaoEncontrada/PaginaNaoEncontrada';
 
 function RotaPrincipal() {
@@ -22,12 +21,11 @@ function RotaPrincipal() {
           <Routes>
             <Route path="/login" element={<Login />} />
             {userLogged && (
-              <Route path="/" element={<Header />}>
-                <Route path="home" element={<Home />} />
+              <Route element={<Header />}>
+                <Route path="/home" element={<Home />} />
                 <Route path="cadastro" element={<Cadastro />} />
                 <Route path="biblioteca" element={<Biblioteca />} />
                 <Route path="emprestimo" element={<Emprestimo />} />
-                <Route path="editar" element={<Editar />} />
               </Route>
             )}
             <Route path="*" element={<PaginaNaoEncontrada />} />

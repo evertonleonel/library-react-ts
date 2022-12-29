@@ -79,6 +79,9 @@ export const ModalBookContainer = styled.div`
     }
   }
   .dataReason {
+    overflow: auto;
+
+    text-overflow: ellipsis;
     background-color: #f4f4f4;
     padding: 16px;
   }
@@ -132,6 +135,9 @@ export const ContainerLeft = styled.div`
     text-transform: none;
     max-height: 53px;
     height: 53px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     @media (max-width: 360px) {
       height: 100%;

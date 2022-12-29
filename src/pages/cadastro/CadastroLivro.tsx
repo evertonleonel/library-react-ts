@@ -18,7 +18,6 @@ import { updateBook } from '../../services/UpdateBook';
 const CadastroLivro: React.FC = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  console.log(state, 'sou o state');
 
   const [message, setMessage] = React.useState('');
   const [genre, setGenre] = useState<string[]>([]);
@@ -89,10 +88,10 @@ const CadastroLivro: React.FC = () => {
 
   useEffect(() => {
     getBooks().then((data) => {
-      const aux = data.map((el) => {
+      const genres = data.map((el) => {
         return el.genre;
       });
-      setGenre(aux.filter((current, i) => aux.indexOf(current) === i));
+      setGenre(genres.filter((current, i) => genres.indexOf(current) === i));
     });
   }, []);
 
@@ -176,6 +175,24 @@ const CadastroLivro: React.FC = () => {
             })}
           </TextField>
         </div>
+
+        {/* <div className="formGenre">
+          <select
+            id="genre"
+            name="genre"
+            value={values.genre}
+            onChange={handleChange}
+          >
+            {genre.map((el, index) => {
+              return (
+                <option key={index} value={el}>
+                  {el}
+                </option>
+              );
+            })}
+          </select>
+        </div> */}
+
         <div className="formDate">
           <TextField
             id="systemEntryDate"
