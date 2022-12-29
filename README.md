@@ -6,7 +6,7 @@ Este Projeto foi construido como forma de estudo. Conhecimentos aplicados: TypeS
 
 ## Instruções
 
-##$ Fluxo para iniciar este projeto
+### Fluxo para iniciar este projeto
 
 Instale o json-server:
 
