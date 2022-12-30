@@ -79,20 +79,6 @@ const ModalLend: React.FC<IModalLend> = ({ selectedBook }) => {
               fullWidth
               helperText={touched.class && errors.class}
             />
-
-            <TextField
-              id="withdrawalDate"
-              name="withdrawalDate"
-              label="Data de Entrada"
-              variant="outlined"
-              value={values.withdrawalDate}
-              onChange={handleChange}
-              type="date"
-              InputLabelProps={{ shrink: true }}
-              fullWidth
-              helperText={touched.withdrawalDate && errors.withdrawalDate}
-            />
-
             <TextField
               id="deliveryDate"
               name="deliveryDate"
@@ -104,6 +90,18 @@ const ModalLend: React.FC<IModalLend> = ({ selectedBook }) => {
               InputLabelProps={{ shrink: true }}
               fullWidth
               helperText={touched.deliveryDate && errors.deliveryDate}
+            />
+            <TextField
+              id="withdrawalDate"
+              name="withdrawalDate"
+              label="Data da Entrega"
+              variant="outlined"
+              value={values.withdrawalDate}
+              onChange={handleChange}
+              type="date"
+              InputLabelProps={{ shrink: true }}
+              fullWidth
+              helperText={touched.withdrawalDate && errors.withdrawalDate}
             />
           </div>
           <div className="formButton">

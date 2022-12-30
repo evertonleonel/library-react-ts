@@ -4,7 +4,6 @@ import TextField from '@mui/material/TextField';
 import { Alert, AlertColor, Button, Snackbar } from '@mui/material';
 import Adicionar from '../../assets/adicionar.svg';
 
-// import { v4 as uuidv4 } from 'uuid';
 import { useFormik } from 'formik';
 import { IBook } from '../../interfaces/book';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -50,6 +49,7 @@ const CadastroLivro: React.FC = () => {
             });
           } else {
             addNewBook({ ...values, systemEntryDate: data });
+
             setMessage('Cadastro realizado com sucesso!');
             setSeverety('success');
             setOpen(true);
@@ -94,11 +94,11 @@ const CadastroLivro: React.FC = () => {
       <form onSubmit={formSubmit}>
         <div className="formImage">
           {img ? (
-            <img src={img} width={180} height={206} />
+            <img src={img} width={180} height={206} alt="Imagem capa" />
           ) : (
             <span>
               {' '}
-              <img src={Adicionar} />
+              <img src={Adicionar} alt="Imagem adicionar capa de livro" />
               Capa
             </span>
           )}
@@ -206,6 +206,7 @@ const CadastroLivro: React.FC = () => {
           >
             Cancelar
           </Button>
+
           <Button type="submit" className="btnSave">
             Salvar
           </Button>
