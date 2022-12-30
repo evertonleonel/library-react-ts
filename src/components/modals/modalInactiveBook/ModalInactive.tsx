@@ -30,8 +30,8 @@ const ModalInactive: React.FC<IModalLoan> = ({ selectedBook }) => {
     };
 
     await updateBook(updateStatusBook).then(() => {
-      handleModal('modalInactive', 'modalBook');
       inactivedBook();
+      handleModal('modalInactive', 'modalBook');
     });
   }
 

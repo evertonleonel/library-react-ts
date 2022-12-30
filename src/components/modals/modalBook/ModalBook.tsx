@@ -41,6 +41,17 @@ const ModalBook: React.FC<IModalBooks> = ({ selectedBook }) => {
     activedBook();
   }
 
+  //moment
+  // pegar a data de hj
+  // pegar a data do livro emprestado
+  // ver se a data de entrega eh maior q hj
+  // se menor true
+  // se maior false
+
+  //ENTREGAR LIVRO
+
+  //
+
   return (
     <Overlay>
       <ModalBookContainer>
@@ -48,7 +59,7 @@ const ModalBook: React.FC<IModalBooks> = ({ selectedBook }) => {
         <div className="dataBookContent">
           <ContainerLeft>
             {selectedBook && <img src={selectedBook.image} />}
-            {selectedBook.rentHistory && !bookStatusLend && (
+            {!bookStatusLend && (
               <Button
                 onClick={() => {
                   handleModal('modalBook', 'modalLend');
@@ -65,7 +76,7 @@ const ModalBook: React.FC<IModalBooks> = ({ selectedBook }) => {
               </Button>
             )}
 
-            {selectedBook.rentHistory && lastRentHistory && bookStatusLend && (
+            {lastRentHistory && bookStatusLend && (
               <Button
                 className="btnEmprestarDevolver"
                 onClick={returnBook}

@@ -9,7 +9,7 @@ import Cadastro from '../pages/cadastro/Cadastro';
 import Biblioteca from '../pages/biblioteca/Biblioteca';
 import Emprestimo from '../pages/emprestimo/Emprestimo';
 import { ModalProvider } from '../context/ModalContext';
-import PaginaNaoEncontrada from '../pages/paginaNaoEncontrada/PaginaNaoEncontrada';
+// import PaginaNaoEncontrada from '../pages/paginaNaoEncontrada/PaginaNaoEncontrada';
 
 function RotaPrincipal() {
   const userLogged = !!localStorage.getItem('user');
@@ -21,14 +21,14 @@ function RotaPrincipal() {
           <Routes>
             <Route path="/login" element={<Login />} />
             {userLogged && (
-              <Route element={<Header />}>
+              <Route path="/" element={<Header />}>
                 <Route path="/home" element={<Home />} />
                 <Route path="cadastro" element={<Cadastro />} />
                 <Route path="biblioteca" element={<Biblioteca />} />
                 <Route path="emprestimo" element={<Emprestimo />} />
               </Route>
             )}
-            <Route path="*" element={<PaginaNaoEncontrada />} />
+            {/* <Route path="*" element={<PaginaNaoEncontrada />} /> */}
           </Routes>
         </ModalProvider>
       </UserStorage>

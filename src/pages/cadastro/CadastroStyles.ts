@@ -229,6 +229,6 @@ export const CadastroDados = styled.div`
   HELPERTEXT 
   */
   .MuiFormHelperText-root {
-    color: #ffc501;
+    color: #ed5e5e;
   }
 `;

@@ -4,13 +4,13 @@ import TextField from '@mui/material/TextField';
 import { Alert, AlertColor, Button, Snackbar } from '@mui/material';
 import Adicionar from '../../assets/adicionar.svg';
 
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 import { useFormik } from 'formik';
 import { IBook } from '../../interfaces/book';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { CadastroDados } from './CadastroStyles';
 import { addNewBook } from '../../services/AddNewBook';
-import { validationSchema } from './validate';
+import { initialValues, validationSchema } from './validate';
 import { converterEmBase64 } from '../../services/ConversorBase64';
 import { getBooks } from '../../services/GetBooks';
 import { updateBook } from '../../services/UpdateBook';
@@ -27,21 +27,15 @@ const CadastroLivro: React.FC = () => {
 
   const { values, errors, handleChange, handleSubmit, setFieldValue, touched } =
     useFormik({
-      initialValues: {
-        id: state?.bookEdit ? state.bookEdit.id : uuidv4(),
-        tittle: state?.bookEdit ? state.bookEdit.tittle : '',
-        author: state?.bookEdit ? state.bookEdit.author : '',
-        status: state?.bookEdit
-          ? state?.bookEdit.status
-          : { description: '', isActive: true },
-        genre: state?.bookEdit ? state.bookEdit.genre : '',
-        image: state?.bookEdit ? state.bookEdit.image : '',
-        systemEntryDate: state?.bookEdit
-          ? state.bookEdit.systemEntryDate.split('/').reverse().join('-')
-          : '',
-        synopsis: state?.bookEdit ? state.bookEdit.synopsis : '',
-        rentHistory: [],
-      },
+      initialValues: state?.bookEdit
+        ? {
+            ...state.bookEdit,
+            systemEntryDate: state.bookEdit.systemEntryDate
+              .split('/')
+              .reverse()
+              .join('-'),
+          }
+        : initialValues,
       validationSchema,
       onSubmit(values: IBook) {
         try {
@@ -151,10 +145,14 @@ const CadastroLivro: React.FC = () => {
             label="Sinopse"
             multiline
             rows={4.3}
+            inputProps={{
+              maxLength: 500,
+            }}
             fullWidth
             helperText={touched.synopsis && errors.synopsis}
           />
         </div>
+
         <div className="formGenre">
           <TextField
             id="genre"
@@ -175,23 +173,6 @@ const CadastroLivro: React.FC = () => {
             })}
           </TextField>
         </div>
-
-        {/* <div className="formGenre">
-          <select
-            id="genre"
-            name="genre"
-            value={values.genre}
-            onChange={handleChange}
-          >
-            {genre.map((el, index) => {
-              return (
-                <option key={index} value={el}>
-                  {el}
-                </option>
-              );
-            })}
-          </select>
-        </div> */}
 
         <div className="formDate">
           <TextField

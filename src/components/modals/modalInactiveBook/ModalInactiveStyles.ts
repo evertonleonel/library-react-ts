@@ -16,7 +16,7 @@ export const ModalInactiveContainer = styled.div`
   position: relative;
 
   .MuiFormHelperText-root {
-    color: #ffc501;
+    color: #ed5e5e;
     font-size: 15px;
   }
 
