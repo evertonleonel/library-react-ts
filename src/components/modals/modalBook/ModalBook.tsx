@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@mui/material';
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
 import {
@@ -9,12 +9,13 @@ import {
 } from './ModalBookStyles';
 
 import CloseModal from '../CloseModal';
-import { IBook } from '../../../interfaces/book';
+import { IBook, IRentHistory } from '../../../interfaces/book';
 import ModalExtraStudent from './ModalExtraStudent';
 import ModalExtraInactive from './ModalExtraInactive';
 import { useModalContext } from '../../../hooks/useModalContext';
 import { updateBook } from '../../../services/UpdateBook';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 
 interface IModalBooks {
   selectedBook: IBook;
@@ -22,11 +23,14 @@ interface IModalBooks {
 
 const ModalBook: React.FC<IModalBooks> = ({ selectedBook }) => {
   const navigate = useNavigate();
-  const { bookStatusLend, returnBook, handleModal, activedBook } =
+  const { handleModal, activedBook, bookStatusLend, returnBook } =
     useModalContext();
 
   const rentHistory = selectedBook.rentHistory;
-  const lastRentHistory = rentHistory[rentHistory.length - 1];
+  const lastHistory = rentHistory[rentHistory.length - 1];
+
+  const [lastRentHistory, setLastRentHistory] =
+    useState<IRentHistory>(lastHistory);
 
   async function newStatusBook() {
     const activeBook = {
@@ -41,16 +45,32 @@ const ModalBook: React.FC<IModalBooks> = ({ selectedBook }) => {
     activedBook();
   }
 
-  //moment
-  // pegar a data de hj
-  // pegar a data do livro emprestado
-  // ver se a data de entrega eh maior q hj
-  // se menor true
-  // se maior false
+  const devolverLivro = async () => {
+    const index = rentHistory.length - 1;
 
-  //ENTREGAR LIVRO
+    const dataAtual = new Date();
+    const newDate = moment(dataAtual).format('DD-MM-YYYY');
+    const newDateFormt = newDate.split('-').join('/');
 
-  //
+    setLastRentHistory({
+      ...lastRentHistory,
+      withdrawalDate: newDateFormt,
+    });
+
+    rentHistory.splice(index, 1, {
+      ...lastRentHistory,
+      withdrawalDate: newDateFormt,
+    });
+
+    const updateRentBook: IBook = {
+      ...selectedBook,
+      rentHistory: rentHistory,
+    };
+
+    returnBook();
+
+    await updateBook(updateRentBook);
+  };
 
   return (
     <Overlay>
@@ -59,7 +79,19 @@ const ModalBook: React.FC<IModalBooks> = ({ selectedBook }) => {
         <div className="dataBookContent">
           <ContainerLeft>
             {selectedBook && <img src={selectedBook.image} />}
-            {!bookStatusLend && (
+
+            {bookStatusLend ? (
+              <Button
+                className="btnEmprestarDevolver"
+                onClick={devolverLivro}
+                variant="outlined"
+                sx={{ backgroundColor: '#F4F4F4', borderColor: '#ADB5BD' }}
+                fullWidth
+                startIcon={<AutoStoriesOutlinedIcon />}
+              >
+                Devolver
+              </Button>
+            ) : (
               <Button
                 onClick={() => {
                   handleModal('modalBook', 'modalLend');
@@ -73,19 +105,6 @@ const ModalBook: React.FC<IModalBooks> = ({ selectedBook }) => {
                 disabled={!selectedBook.status.isActive}
               >
                 Emprestar
-              </Button>
-            )}
-
-            {lastRentHistory && bookStatusLend && (
-              <Button
-                className="btnEmprestarDevolver"
-                onClick={returnBook}
-                variant="outlined"
-                sx={{ backgroundColor: '#F4F4F4', borderColor: '#ADB5BD' }}
-                fullWidth
-                startIcon={<AutoStoriesOutlinedIcon />}
-              >
-                Devolver
               </Button>
             )}
           </ContainerLeft>
@@ -155,7 +174,7 @@ const ModalBook: React.FC<IModalBooks> = ({ selectedBook }) => {
             <ModalExtraInactive selectedBook={selectedBook} />
           </div>
         )}
-        {selectedBook.rentHistory && lastRentHistory && bookStatusLend && (
+        {bookStatusLend && (
           <div className="dataStudent">
             <ModalExtraStudent selectedBook={selectedBook} />
           </div>

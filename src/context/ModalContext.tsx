@@ -39,7 +39,7 @@ export const ModalProvider: React.FC<IProps> = ({ children }) => {
     modalHistory: false,
   });
   const [render, setRender] = useState(false);
-  const [bookStatusLend, setStatusBookLend] = React.useState<boolean>(false);
+  const [bookStatusLend, setStatusBookLend] = useState<boolean>(false);
 
   const openModal = () => setModalBook(true);
   const closeModal = () => setModalBook(false);
