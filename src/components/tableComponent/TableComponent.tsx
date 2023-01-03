@@ -8,11 +8,13 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import InputBase from '@mui/material/InputBase';
 import FiltroSVG from '../../assets/filtroEmprestimo.svg';
+import InputFilter from '../inputFilter/InputFilter';
 
 export type THeadTable = {
   label: string;
   id: string;
   filterField: string | null;
+  filterType: string | null;
 };
 
 interface IProps {
@@ -47,18 +49,18 @@ export const TableComponent = ({
           <TableBody>
             <TableRow>
               {/* rendereiza os campos de filtros a partir do filterField */}
-              {HEAD_TABLE.map(({ filterField, id }) => {
+              {HEAD_TABLE.map(({ filterField, filterType, id }) => {
                 return (
                   <TableCell key={id}>
                     {filterField && (
-                      <div className="search">
-                        <img src={FiltroSVG} />
-                        <InputBase
-                          id={filterField}
-                          name={filterField}
-                          onChange={handleFilter}
-                        />
-                      </div>
+                      <InputFilter
+                        className="search"
+                        src={FiltroSVG}
+                        id={filterField}
+                        name={filterField}
+                        onChange={handleFilter}
+                        type={filterType}
+                      />
                     )}
                   </TableCell>
                 );

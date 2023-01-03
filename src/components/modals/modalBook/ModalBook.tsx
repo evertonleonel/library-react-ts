@@ -120,7 +120,11 @@ const ModalBook: React.FC<IModalBooks> = ({ selectedBook }) => {
                 <h3>Gênero</h3>
                 <p>{selectedBook.genre}</p>
                 <h3>Data de Entrada</h3>
-                <p>{selectedBook.systemEntryDate}</p>
+                <p>
+                  {new Date(selectedBook.systemEntryDate).toLocaleDateString(
+                    'pt-BR'
+                  )}
+                </p>
               </div>
             )}
             <div className="dataButtons">

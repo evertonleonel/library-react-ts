@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import LinkBackHome from '../../components/linkBackHome/LinkBackHome';
 
 import { BibliotecaContainer } from './BibliotecaStyles';
@@ -21,12 +21,25 @@ const Biblioteca: React.FC = () => {
 
   const { state } = useLocation();
 
-  const [books, setBooks] = React.useState<IBook[]>();
-  const [selectedBook, setSelectedBook] = React.useState<IBook>();
-  const [loadBooks, setLoadBooks] = React.useState<IBook[]>();
-  const [inputPesquisar, setInputPesquisar] = React.useState('');
-  const [selectFiltro, setSelectFiltro] = React.useState('');
-  const [ID, setID] = React.useState<string>();
+  const [books, setBooks] = useState<IBook[]>([]);
+  const [selectedBook, setSelectedBook] = useState<IBook>();
+  const [loadBooks, setLoadBooks] = useState<IBook[]>();
+  const [inputPesquisar, setInputPesquisar] = useState('');
+  const [selectFiltro, setSelectFiltro] = useState('');
+  const [inputDate, setInputDate] = useState('');
+  const [dateSelected, setDateSelected] = useState('');
+
+  const [filterBooks, setFilterBooks] = useState<{
+    genre: string;
+    systemEntryDate: string;
+    searchText: string;
+  }>({
+    genre: '0',
+    systemEntryDate: '',
+    searchText: '',
+  });
+
+  const [ID, setID] = useState<string>();
 
   useEffect(() => {
     if (state) {
@@ -62,38 +75,94 @@ const Biblioteca: React.FC = () => {
     setInputPesquisar(value);
   }
 
+  function inputChangeDate(e: React.ChangeEvent<HTMLInputElement>) {
+    const { value } = e.target;
+    setDateSelected(value);
+    const parseDate = value.split('-').reverse().join('/');
+    if (parseDate) {
+      setInputDate(parseDate);
+    }
+  }
+
+  const handleFilterDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFilterBooks({ ...filterBooks, [name]: value });
+  };
+
+  const handleClickFilter = () => {
+    const filteredBooks = books.filter((book) => {
+      const genre = filterBooks.genre == '0' || book.genre == filterBooks.genre;
+      const searchText =
+        !filterBooks.searchText ||
+        book.author
+          .toLocaleLowerCase()
+          .includes(filterBooks.searchText.toLocaleLowerCase()) ||
+        book.tittle
+          .toLocaleLowerCase()
+          .includes(filterBooks.searchText.toLocaleLowerCase());
+
+      const systemEntryDate =
+        !filterBooks.systemEntryDate ||
+        book.systemEntryDate ==
+          new Date(
+            filterBooks.systemEntryDate.replaceAll('-', '/')
+          ).toLocaleDateString('pt-BR');
+
+      return genre && systemEntryDate && searchText;
+    });
+
+    setLoadBooks(filteredBooks);
+  };
+
   function filtroChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { value } = e.target;
     setSelectFiltro(value);
   }
 
-  const filtrarLivros = async (
-    pesquisa: string,
-    tipo: 'tittle' | 'author' | 'systemEntryDate' | 'genre'
-  ) => {
+  const filtrarLivrosPeloInput = async (pesquisa: string) => {
     if (books) {
-      const FilterBooks = books.filter(
-        (book) => book[tipo].toLowerCase().indexOf(pesquisa.toLowerCase()) > -1
+      const LivrosFiltrados = books.filter(
+        (book) =>
+          book.tittle.toLowerCase().includes(pesquisa.toLowerCase()) ||
+          book.author.toLowerCase().includes(pesquisa.toLowerCase())
       );
-      setLoadBooks(FilterBooks);
+      setLoadBooks(LivrosFiltrados);
     }
   };
 
-  function buscarLivros() {
-    filtrarLivros(
-      inputPesquisar,
-      selectFiltro as 'tittle' | 'author' | 'systemEntryDate' | 'genre'
-    );
+  function buscarPorGeneroOuData() {
+    // filtrarPorGeneroData(inputDate, selectFiltro);
+    handleClickFilter();
+  }
+
+  function buscarLivrosPorAutorETitulo() {
+    filtrarLivrosPeloInput(inputPesquisar);
+  }
+
+  function limparCampos() {
+    setDateSelected('');
+    setSelectFiltro('');
+    setFilterBooks({
+      genre: '0',
+      systemEntryDate: '',
+      searchText: '',
+    });
   }
 
   return (
     <BibliotecaContainer>
       <LinkBackHome page="Biblioteca" />
       <BibliotecaBuscar
+        handleFilterDate={handleFilterDate}
+        filterBooks={filterBooks}
         inputChange={inputChange}
-        buscarLivros={buscarLivros}
+        inputChangeDate={inputChangeDate}
+        buscarLivrosPorAutorETitulo={buscarLivrosPorAutorETitulo}
+        buscarPorGeneroOuData={buscarPorGeneroOuData}
         filtroChange={filtroChange}
         selectFiltro={selectFiltro}
+        dateSelected={dateSelected}
+        limparCampos={limparCampos}
       />
       {selectedBook && (
         <>
