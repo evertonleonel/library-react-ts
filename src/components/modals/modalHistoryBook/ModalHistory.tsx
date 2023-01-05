@@ -31,17 +31,24 @@ const ModalHistory: React.FC<IModalHistory> = ({ selectedBook }) => {
 
   //label: usario final, id:atributo do elemento dos dados, filterField: nome do filtro
   const HEAD_TABLE = [
-    { label: 'Aluno', id: 'studentName', filterField: 'student' },
-    { label: 'Turma', id: 'class', filterField: 'classe' },
+    {
+      label: 'Aluno',
+      id: 'studentName',
+      filterField: 'student',
+      filterType: 'text',
+    },
+    { label: 'Turma', id: 'class', filterField: 'classe', filterType: 'text' },
     {
       label: 'Data da Retirada',
       id: 'deliveryDate',
       filterField: 'deliveryDate',
+      filterType: 'date',
     },
     {
       label: 'Data da Entrega',
       id: 'withdrawalDate',
       filterField: 'withdrawalDate',
+      filterType: 'date',
     },
   ];
 

@@ -29,16 +29,17 @@ const CadastroLivro: React.FC = () => {
       initialValues: state?.bookEdit
         ? {
             ...state.bookEdit,
-            systemEntryDate: state.bookEdit.systemEntryDate
-              .split('/')
-              .reverse()
-              .join('-'),
+            systemEntryDate: new Date(state.bookEdit.systemEntryDate)
+              .toISOString()
+              .substring(0, 10),
           }
         : initialValues,
       validationSchema,
       onSubmit(values: IBook) {
         try {
-          const data = values.systemEntryDate.split('-').reverse().join('/');
+          const data = new Date(
+            values.systemEntryDate.replaceAll('-', '/')
+          ).toISOString();
 
           if (state?.bookEdit) {
             updateBook({ ...values, systemEntryDate: data });

@@ -15,7 +15,6 @@ import ModalExtraInactive from './ModalExtraInactive';
 import { useModalContext } from '../../../hooks/useModalContext';
 import { updateBook } from '../../../services/UpdateBook';
 import { useNavigate } from 'react-router-dom';
-import moment from 'moment';
 
 interface IModalBooks {
   selectedBook: IBook;
@@ -48,18 +47,16 @@ const ModalBook: React.FC<IModalBooks> = ({ selectedBook }) => {
   const devolverLivro = async () => {
     const index = rentHistory.length - 1;
 
-    const dataAtual = new Date();
-    const newDate = moment(dataAtual).format('DD-MM-YYYY');
-    const newDateFormt = newDate.split('-').join('/');
+    const dataAtual = new Date().toISOString();
 
     setLastRentHistory({
       ...lastRentHistory,
-      withdrawalDate: newDateFormt,
+      withdrawalDate: dataAtual,
     });
 
     rentHistory.splice(index, 1, {
       ...lastRentHistory,
-      withdrawalDate: newDateFormt,
+      withdrawalDate: dataAtual,
     });
 
     const updateRentBook: IBook = {

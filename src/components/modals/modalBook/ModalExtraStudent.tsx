@@ -29,8 +29,17 @@ const ModalExtraStudent: React.FC<IPropsBook> = ({ selectedBook }) => {
                 <tr>
                   <th>{lastRentHistory.studentName}</th>
                   <th>{lastRentHistory.class}</th>
-                  <th>{lastRentHistory.deliveryDate}</th>
-                  <th>{lastRentHistory.withdrawalDate}</th>
+
+                  <th>
+                    {new Date(lastRentHistory.deliveryDate).toLocaleDateString(
+                      'pt-BR'
+                    )}
+                  </th>
+                  <th>
+                    {new Date(
+                      lastRentHistory.withdrawalDate
+                    ).toLocaleDateString('pt-BR')}
+                  </th>
                 </tr>
               )}
             </tbody>

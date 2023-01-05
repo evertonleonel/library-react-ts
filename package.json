@@ -16,6 +16,7 @@
     "@mui/material": "^5.10.17",
     "@mui/styled-engine-sc": "^5.10.16",
     "axios": "^1.2.1",
+    "date-fns": "^2.29.3",
     "formik": "^2.2.9",
     "install": "^0.13.0",
     "moment": "^2.29.4",

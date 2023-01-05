@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button } from '@mui/material';
+import React, { useState } from 'react';
+import { Alert, AlertColor, Button, Snackbar } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
 import { ModalLendContainer } from './ModalLendStyles';
@@ -11,6 +11,7 @@ import { IBook, IRentHistory } from '../../../interfaces/book';
 import { useFormik } from 'formik';
 import { initialValues, validationSchema } from './validate';
 import { updateBook } from '../../../services/UpdateBook';
+import moment from 'moment';
 
 interface IModalLend {
   selectedBook: IBook;
@@ -18,6 +19,9 @@ interface IModalLend {
 
 const ModalLend: React.FC<IModalLend> = ({ selectedBook }) => {
   const { handleModal, borrowBook } = useModalContext();
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severety, setSeverety] = useState<AlertColor>('info');
 
   async function updateBookLend(values: IRentHistory) {
     const updateRentBook: IBook = {
@@ -33,20 +37,35 @@ const ModalLend: React.FC<IModalLend> = ({ selectedBook }) => {
     validationSchema,
     onSubmit(values) {
       try {
-        const dataEntrada = values.withdrawalDate
-          .split('-')
-          .reverse()
-          .join('/');
-        const dataRetirada = values.deliveryDate.split('-').reverse().join('/');
+        const dataEntrega = new Date(values.withdrawalDate).toISOString();
+
+        const dataRetirada = new Date(values.deliveryDate).toISOString();
+
+        if (moment(dataRetirada).isAfter(dataEntrega)) {
+          setOpen(true);
+          setSeverety('warning');
+          setMessage(
+            'A data de retirada não pode ser maior que a data de entrega'
+          );
+          return;
+        }
+
         updateBookLend({
           ...values,
-          withdrawalDate: dataEntrada,
+          withdrawalDate: dataEntrega,
           deliveryDate: dataRetirada,
         });
-        handleModal('modalLend', 'modalBook');
-        borrowBook();
+        setSeverety('success');
+        setMessage('Livro devolvido com sucesso!');
+        setOpen(true);
+        setTimeout(() => {
+          borrowBook();
+          handleModal('modalLend', 'modalBook');
+        }, 500);
       } catch (err) {
-        console.log(err);
+        setSeverety('warning');
+        setMessage('Algo deu errado');
+        setOpen(true);
       }
     },
   });
@@ -115,6 +134,18 @@ const ModalLend: React.FC<IModalLend> = ({ selectedBook }) => {
               Emprestar
             </Button>
           </div>
+          <Snackbar
+            open={open}
+            autoHideDuration={4000}
+            onClose={() => {
+              setOpen(false);
+            }}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          >
+            <Alert severity={severety} sx={{ width: '100%' }}>
+              {message}
+            </Alert>
+          </Snackbar>
         </form>
       </ModalLendContainer>
     </Overlay>

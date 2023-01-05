@@ -103,10 +103,9 @@ const Biblioteca: React.FC = () => {
 
       const systemEntryDate =
         !filterBooks.systemEntryDate ||
-        book.systemEntryDate ==
-          new Date(
-            filterBooks.systemEntryDate.replaceAll('-', '/')
-          ).toLocaleDateString('pt-BR');
+        book.systemEntryDate
+          .toLowerCase()
+          .includes(filterBooks.systemEntryDate.toLowerCase());
 
       return genre && systemEntryDate && searchText;
     });
@@ -131,7 +130,6 @@ const Biblioteca: React.FC = () => {
   };
 
   function buscarPorGeneroOuData() {
-    // filtrarPorGeneroData(inputDate, selectFiltro);
     handleClickFilter();
   }
 
