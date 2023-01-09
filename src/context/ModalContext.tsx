@@ -12,10 +12,7 @@ export type TObjModal = {
 };
 
 interface IModalContext {
-  render: boolean;
   bookStatusLend: boolean;
-  inactivedBook: () => void;
-  activedBook: () => void;
   openModal: () => void;
   closeModal: () => void;
   borrowBook: () => void;
@@ -38,7 +35,7 @@ export const ModalProvider: React.FC<IProps> = ({ children }) => {
     modalInactive: false,
     modalHistory: false,
   });
-  const [render, setRender] = useState(false);
+
   const [bookStatusLend, setStatusBookLend] = useState<boolean>(false);
 
   const openModal = () => setModalBook(true);
@@ -46,9 +43,6 @@ export const ModalProvider: React.FC<IProps> = ({ children }) => {
 
   const borrowBook = () => setStatusBookLend(true);
   const returnBook = () => setStatusBookLend(false);
-
-  const inactivedBook = () => setRender(false);
-  const activedBook = () => setRender(true);
 
   const handleModal = (
     closeModal: keyof typeof objModal,
@@ -66,9 +60,6 @@ export const ModalProvider: React.FC<IProps> = ({ children }) => {
       value={{
         openModal,
         closeModal,
-        render,
-        inactivedBook,
-        activedBook,
         bookStatusLend,
         borrowBook,
         returnBook,

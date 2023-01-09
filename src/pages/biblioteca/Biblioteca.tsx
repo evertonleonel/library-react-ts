@@ -16,7 +16,7 @@ import { getBookFromID } from '../../services/GetBookFromID';
 import { useLocation } from 'react-router-dom';
 
 const Biblioteca: React.FC = () => {
-  const { openModal, render, objModal, handleModal, bookStatusLend } =
+  const { openModal, objModal, handleModal, bookStatusLend } =
     useModalContext();
 
   const { state } = useLocation();
@@ -46,9 +46,13 @@ const Biblioteca: React.FC = () => {
       setSelectedBook(state.bookEdit);
       openModal();
     }
-  }, [state, render]);
+  }, [state]);
 
   React.useEffect(() => {
+    handleUpdate();
+  }, [bookStatusLend]);
+
+  const handleUpdate = () => {
     getBooks().then((data) => setBooks(data));
 
     if (ID) {
@@ -56,7 +60,7 @@ const Biblioteca: React.FC = () => {
         setSelectedBook(book);
       });
     }
-  }, [render, bookStatusLend]);
+  };
 
   function getBookSelected(e: React.MouseEvent<HTMLLIElement>) {
     if (typeof e.currentTarget.id === 'string') {
@@ -164,10 +168,23 @@ const Biblioteca: React.FC = () => {
       />
       {selectedBook && (
         <>
-          {objModal.modalBook && <ModalBook selectedBook={selectedBook} />}
-          {objModal.modalLend && <ModalLend selectedBook={selectedBook} />}
+          {objModal.modalBook && (
+            <ModalBook
+              handleUpdate={handleUpdate}
+              selectedBook={selectedBook}
+            />
+          )}
+          {objModal.modalLend && (
+            <ModalLend
+              handleUpdate={handleUpdate}
+              selectedBook={selectedBook}
+            />
+          )}
           {objModal.modalInactive && (
-            <ModalInactive selectedBook={selectedBook} />
+            <ModalInactive
+              handleUpdate={handleUpdate}
+              selectedBook={selectedBook}
+            />
           )}
           {objModal.modalHistory && (
             <ModalHistory selectedBook={selectedBook} />

@@ -18,15 +18,16 @@ import { useNavigate } from 'react-router-dom';
 
 interface IModalBooks {
   selectedBook: IBook;
+  handleUpdate: () => void;
 }
 
-const ModalBook: React.FC<IModalBooks> = ({ selectedBook }) => {
+const ModalBook: React.FC<IModalBooks> = ({ selectedBook, handleUpdate }) => {
   const navigate = useNavigate();
-  const { handleModal, activedBook, bookStatusLend, returnBook } =
-    useModalContext();
+  const { handleModal, bookStatusLend, returnBook } = useModalContext();
 
   const rentHistory = selectedBook.rentHistory;
   const lastHistory = rentHistory[rentHistory.length - 1];
+  const statusBook = selectedBook.status.isActive;
 
   const [lastRentHistory, setLastRentHistory] =
     useState<IRentHistory>(lastHistory);
@@ -41,7 +42,7 @@ const ModalBook: React.FC<IModalBooks> = ({ selectedBook }) => {
     };
 
     await updateBook(activeBook);
-    activedBook();
+    handleUpdate();
   }
 
   const devolverLivro = async () => {
@@ -67,6 +68,7 @@ const ModalBook: React.FC<IModalBooks> = ({ selectedBook }) => {
     returnBook();
 
     await updateBook(updateRentBook);
+    handleUpdate();
   };
 
   return (
@@ -139,7 +141,7 @@ const ModalBook: React.FC<IModalBooks> = ({ selectedBook }) => {
                 Editar
               </Button>
 
-              {selectedBook.status.isActive ? (
+              {statusBook ? (
                 <Button
                   onClick={() => handleModal('modalBook', 'modalInactive')}
                   variant="outlined"

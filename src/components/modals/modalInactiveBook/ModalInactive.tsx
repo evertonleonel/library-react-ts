@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
-import { Button } from '@mui/material';
+import { Button, Snackbar, Alert, AlertColor } from '@mui/material';
 import { Overlay } from '../modalBook/ModalBookStyles';
 import { ModalInactiveContainer } from './ModalInactiveStyles';
 
@@ -15,10 +15,17 @@ import { updateBook } from '../../../services/UpdateBook';
 
 interface IModalLoan {
   selectedBook: IBook;
+  handleUpdate: () => void;
 }
 
-const ModalInactive: React.FC<IModalLoan> = ({ selectedBook }) => {
-  const { handleModal, inactivedBook } = useModalContext();
+const ModalInactive: React.FC<IModalLoan> = ({
+  selectedBook,
+  handleUpdate,
+}) => {
+  const { handleModal } = useModalContext();
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severety, setSeverety] = useState<AlertColor>('info');
 
   async function newStatusBook(description: string) {
     const updateStatusBook = {
@@ -30,9 +37,11 @@ const ModalInactive: React.FC<IModalLoan> = ({ selectedBook }) => {
     };
 
     await updateBook(updateStatusBook).then(() => {
-      inactivedBook();
-      handleModal('modalInactive', 'modalBook');
+      setTimeout(() => {
+        handleModal('modalInactive', 'modalBook');
+      }, 500);
     });
+    handleUpdate();
   }
 
   const { values, errors, handleChange, handleSubmit } = useFormik({
@@ -40,6 +49,9 @@ const ModalInactive: React.FC<IModalLoan> = ({ selectedBook }) => {
     validationSchema,
     onSubmit(values) {
       newStatusBook(values.description);
+      setSeverety('success');
+      setMessage('Livro inativado sucesso!');
+      setOpen(true);
     },
   });
 
@@ -72,6 +84,18 @@ const ModalInactive: React.FC<IModalLoan> = ({ selectedBook }) => {
               Inativar
             </Button>
           </div>
+          <Snackbar
+            open={open}
+            autoHideDuration={4000}
+            onClose={() => {
+              setOpen(false);
+            }}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          >
+            <Alert severity={severety} sx={{ width: '100%' }}>
+              {message}
+            </Alert>
+          </Snackbar>
         </form>
       </ModalInactiveContainer>
     </Overlay>

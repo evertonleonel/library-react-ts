@@ -56,7 +56,7 @@ export const UserStorage: React.FC<Iprops> = ({ children }) => {
           window.localStorage.setItem('user', values.email);
           getUser();
           setError(false);
-          navigate('/home');
+          navigate('/');
         } else {
           setError(true);
           timeError();

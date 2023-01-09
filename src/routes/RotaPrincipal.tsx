@@ -20,13 +20,15 @@ function RotaPrincipal() {
         <ModalProvider>
           <Routes>
             <Route path="/login" element={<Login />} />
-            {userLogged && (
+            {userLogged ? (
               <Route path="/" element={<Header />}>
-                <Route path="/home" element={<Home />} />
-                <Route path="cadastro" element={<Cadastro />} />
-                <Route path="biblioteca" element={<Biblioteca />} />
-                <Route path="emprestimo" element={<Emprestimo />} />
+                <Route index element={<Home />} />
+                <Route path="/cadastro" element={<Cadastro />} />
+                <Route path="/biblioteca" element={<Biblioteca />} />
+                <Route path="/emprestimo" element={<Emprestimo />} />
               </Route>
+            ) : (
+              <Route path="/login" element={<Login />} />
             )}
             {/* <Route path="*" element={<PaginaNaoEncontrada />} /> */}
           </Routes>

@@ -10,7 +10,7 @@ interface IProps {
 const LinkBackHome: React.FC<IProps> = ({ page }) => {
   return (
     <NavegationContainer>
-      <Link to={'/home'}>
+      <Link to={'/'}>
         <ChevronLeftIcon fontSize="large" sx={{ color: ' #000000' }} />
         Home
       </Link>

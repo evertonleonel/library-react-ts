@@ -15,9 +15,10 @@ import moment from 'moment';
 
 interface IModalLend {
   selectedBook: IBook;
+  handleUpdate: () => void;
 }
 
-const ModalLend: React.FC<IModalLend> = ({ selectedBook }) => {
+const ModalLend: React.FC<IModalLend> = ({ selectedBook, handleUpdate }) => {
   const { handleModal, borrowBook } = useModalContext();
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
@@ -58,6 +59,7 @@ const ModalLend: React.FC<IModalLend> = ({ selectedBook }) => {
         setSeverety('success');
         setMessage('Livro devolvido com sucesso!');
         setOpen(true);
+        handleUpdate();
         setTimeout(() => {
           borrowBook();
           handleModal('modalLend', 'modalBook');
