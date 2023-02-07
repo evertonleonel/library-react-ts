@@ -45,8 +45,10 @@ const LoginForm = () => {
       <LoginContainer>
         <LoginLogo src={Logo} alt="Logo login" />
 
-        <form onSubmit={formSubmit}>
+        <form name="form-login" role="form" onSubmit={formSubmit}>
           <TextField
+            role="textbox"
+            data-testid="email"
             id="email"
             name="email"
             type="email"
@@ -71,6 +73,8 @@ const LoginForm = () => {
           />
 
           <TextField
+            role="textbox"
+            data-testid="password"
             id="password"
             type="password"
             name="password"

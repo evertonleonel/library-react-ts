@@ -10,6 +10,7 @@ const Home = () => {
     <MainContainer>
       <CardsContainer>
         <Card
+          data-testId="card-cadastro"
           onClick={() => {
             navigate('/cadastro');
           }}
